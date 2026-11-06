@@ -1,0 +1,3198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SHADOW INJECTOR - 1/4 RECTANGLE</title>
+    <!-- Fonts: Orbitron, Rajdhani, Permanent Marker, Share Tech Mono, Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@600;700;800;900&family=Permanent+Marker&family=Rajdhani:wght@500;600;700;800&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           DYNAMIC CHROMATIC THEMES (Royal Gold, Void Purple, Blood Red, Ice, Toxic)
+           Strict Theme Harmony: NO foreign red borders on Gold or Void Purple!
+           ========================================================================== */
+        :root {
+            /* Default: Royal Gold (24K Gold & Obsidian) */
+            --theme-color: #eab308;
+            --theme-bright: #fef08a;
+            --theme-accent: #fde047;
+            --theme-glow: rgba(234, 179, 8, 0.75);
+            --theme-glow-soft: rgba(234, 179, 8, 0.28);
+            --theme-dark: #713f12;
+            --theme-bg-grad: linear-gradient(160deg, #1c1809 0%, #0f0d04 45%, #060502 100%);
+            --theme-inner-bg: radial-gradient(ellipse at center, #241e0a 0%, #0e0c03 100%);
+            --theme-box-border: rgba(234, 179, 8, 0.45);
+            --theme-steel: #fef08a;
+            --theme-steel-dim: #a16207;
+        }
+
+        /* 1. Royal Gold (Default) */
+        .theme-dragon {
+            --theme-color: #eab308;
+            --theme-bright: #fef08a;
+            --theme-accent: #fde047;
+            --theme-glow: rgba(234, 179, 8, 0.75);
+            --theme-glow-soft: rgba(234, 179, 8, 0.28);
+            --theme-dark: #713f12;
+            --theme-bg-grad: linear-gradient(160deg, #1c1809 0%, #0f0d04 45%, #060502 100%);
+            --theme-inner-bg: radial-gradient(ellipse at center, #241e0a 0%, #0e0c03 100%);
+            --theme-box-border: rgba(234, 179, 8, 0.45);
+            --theme-steel: #fef08a;
+            --theme-steel-dim: #a16207;
+        }
+
+        /* 2. Void Purple (Deep Amethyst Void - PURE PURPLE BORDER, NO RED LINE!) */
+        .theme-void {
+            --theme-color: #a855f7;
+            --theme-bright: #f3e8ff;
+            --theme-accent: #c084fc;
+            --theme-glow: rgba(168, 85, 247, 0.8);
+            --theme-glow-soft: rgba(168, 85, 247, 0.28);
+            --theme-dark: #581c87;
+            --theme-bg-grad: linear-gradient(160deg, #190a26 0%, #0c0414 45%, #050208 100%);
+            --theme-inner-bg: radial-gradient(ellipse at center, #190928 0%, #07020d 100%);
+            --theme-box-border: rgba(168, 85, 247, 0.45);
+            --theme-steel: #e9d5ff;
+            --theme-steel-dim: #7e22ce;
+        }
+
+        /* 3. Blood Red (Shadow Demon) */
+        .theme-red {
+            --theme-color: #ff1a1a;
+            --theme-bright: #ffe6e6;
+            --theme-accent: #ff4d4d;
+            --theme-glow: rgba(255, 26, 26, 0.75);
+            --theme-glow-soft: rgba(255, 26, 26, 0.28);
+            --theme-dark: #8b0000;
+            --theme-bg-grad: linear-gradient(160deg, #18090a 0%, #0d0405 45%, #050203 100%);
+            --theme-inner-bg: radial-gradient(ellipse at center, #180709 0%, #080203 100%);
+            --theme-box-border: rgba(255, 26, 26, 0.45);
+            --theme-steel: #8e9eb5;
+            --theme-steel-dim: #4d5e73;
+        }
+
+        /* 4. Ice Frost (Cyan / Ice Glaze) */
+        .theme-ice {
+            --theme-color: #00d0ff;
+            --theme-bright: #e0f7ff;
+            --theme-accent: #33e0ff;
+            --theme-glow: rgba(0, 208, 255, 0.75);
+            --theme-glow-soft: rgba(0, 208, 255, 0.28);
+            --theme-dark: #004488;
+            --theme-bg-grad: linear-gradient(160deg, #09141c 0%, #04090f 45%, #020406 100%);
+            --theme-inner-bg: radial-gradient(ellipse at center, #0a1724 0%, #03080e 100%);
+            --theme-box-border: rgba(0, 208, 255, 0.45);
+            --theme-steel: #93c5fd;
+            --theme-steel-dim: #0284c7;
+        }
+
+        /* 5. Toxic Acid (Bio-Green) */
+        .theme-toxic {
+            --theme-color: #00ff33;
+            --theme-bright: #dcffe4;
+            --theme-accent: #33ff55;
+            --theme-glow: rgba(0, 255, 51, 0.75);
+            --theme-glow-soft: rgba(0, 255, 51, 0.28);
+            --theme-dark: #006611;
+            --theme-bg-grad: linear-gradient(160deg, #091a0c 0%, #040d06 45%, #020502 100%);
+            --theme-inner-bg: radial-gradient(ellipse at center, #0a1c0e 0%, #030804 100%);
+            --theme-box-border: rgba(0, 255, 51, 0.45);
+            --theme-steel: #86efac;
+            --theme-steel-dim: #15803d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', 'Orbitron', 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background: transparent !important;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            color: #fff;
+            pointer-events: none;
+        }
+
+        #bgFrame {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: -1;
+            pointer-events: auto;
+        }
+
+        /* ── Core Keyframes ── */
+        @keyframes fab-float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg);
+            }
+
+            50% {
+                transform: translateY(-4px) rotate(2deg);
+            }
+        }
+
+        @keyframes rotate-cw {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotate-ccw {
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+
+        @keyframes dot-pulse {
+
+            0%,
+            100% {
+                transform: scale(.85);
+                opacity: .7;
+            }
+
+            50% {
+                transform: scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        @keyframes spdFadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes spdFadeOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+        }
+
+        @keyframes flowMove {
+            to {
+                stroke-dashoffset: -800;
+            }
+        }
+
+        @keyframes flowMoveRev {
+            to {
+                stroke-dashoffset: 800;
+            }
+        }
+
+        @keyframes flowAurora {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes glareSweep {
+            0% {
+                left: -150%;
+            }
+
+            20% {
+                left: 150%;
+            }
+
+            100% {
+                left: 150%;
+            }
+        }
+
+        @keyframes shadowTextGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 10px var(--theme-color), 0 0 20px var(--theme-dark);
+            }
+
+            50% {
+                text-shadow: 0 0 18px var(--theme-bright), 0 0 32px var(--theme-color), 0 0 40px #fff;
+            }
+        }
+
+        /* ── BREATHING EFFECT FOR WITCH PHOTO ── */
+        @keyframes photoBreathe {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 8px var(--theme-color)) brightness(0.96);
+            }
+
+            50% {
+                transform: scale(1.035);
+                filter: drop-shadow(0 0 16px var(--theme-bright)) drop-shadow(0 0 26px var(--theme-color)) brightness(1.08);
+            }
+
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 8px var(--theme-color)) brightness(0.96);
+            }
+        }
+
+        @keyframes auraPulseRing {
+
+            0%,
+            100% {
+                opacity: 0.25;
+                transform: scale(0.9);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.15);
+            }
+        }
+
+        /* ── HORIZONTAL LASER DROPS EFFECT (LEFT TO RIGHT) ── */
+        @keyframes laserDropLeftToRight {
+            0% {
+                left: -160px;
+                opacity: 0;
+                transform: scaleX(0.4);
+            }
+
+            8% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+
+            92% {
+                opacity: 1;
+                transform: scaleX(1.15);
+            }
+
+            100% {
+                left: calc(100% + 60px);
+                opacity: 0;
+                transform: scaleX(0.5);
+            }
+        }
+
+        /* ── HORIZONTAL LASER DROPS EFFECT (RIGHT TO LEFT) ── */
+        @keyframes laserDropRightToLeft {
+            0% {
+                right: -160px;
+                opacity: 0;
+                transform: scaleX(0.4);
+            }
+
+            8% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+
+            92% {
+                opacity: 1;
+                transform: scaleX(1.15);
+            }
+
+            100% {
+                right: calc(100% + 60px);
+                opacity: 0;
+                transform: scaleX(0.5);
+            }
+        }
+
+        /* ==========================================================================
+           MINI FLOATING FAB (Themed Ball with Clean Witch Avatar)
+           ========================================================================== */
+        #mini {
+            position: absolute;
+            right: 20px;
+            top: 130px;
+            width: 54px;
+            height: 54px;
+            cursor: grab;
+            touch-action: none;
+            z-index: 2147483647;
+            pointer-events: auto;
+            will-change: left, top;
+            display: none;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #mini:active {
+            cursor: grabbing;
+            transform: scale(0.94);
+        }
+
+        #spd-fab-core {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 35% 25%, #2a1f0a, #080602 75%);
+            border: 2px solid var(--theme-color);
+            box-shadow: 0 0 20px var(--theme-glow), inset 0 0 10px var(--theme-glow-soft);
+            overflow: hidden;
+            animation: fab-float 3s ease-in-out infinite;
+        }
+
+        #spd-fab-core:before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: conic-gradient(transparent, var(--theme-color), transparent, var(--theme-accent), transparent);
+            animation: rotate-cw 2.6s linear infinite;
+        }
+
+        #spd-fab-core:after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            background: #080602;
+            z-index: 1;
+        }
+
+        #spd-fab-icon {
+            position: relative;
+            z-index: 3;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #spd-fab-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 6px var(--theme-color));
+        }
+
+        #spd-fab-dot {
+            position: absolute;
+            right: 2px;
+            top: 2px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--theme-color);
+            box-shadow: 0 0 10px var(--theme-color);
+            z-index: 5;
+            animation: dot-pulse 1.1s infinite;
+        }
+
+        /* ==========================================================================
+           STAGE PANEL: RECTANGULAR CHASSIS (1/4 Mobile Screen Ratio)
+           Dimensions: 550px wide x 235px high
+           Docks to TOP of mobile screen, preserving 3/4th screen below!
+           ========================================================================== */
+        #stage {
+            display: block;
+            position: absolute;
+            top: 16px;
+            /* Strictly Top of mobile app screen! */
+            left: calc(50% - 275px);
+            width: 550px;
+            height: 235px;
+            z-index: 2147483647;
+            touch-action: none;
+            cursor: grab;
+            border-radius: 16px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.95), 0 0 28px var(--theme-glow-soft);
+            will-change: left, top, opacity;
+            pointer-events: auto;
+            animation: spdFadeIn .25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        #stage.spd-close {
+            animation: spdFadeOut .2s ease-in forwards;
+            pointer-events: none;
+        }
+
+        /* ── SVG Border Streams (Strictly themed: Stream 1 & Stream 2 match theme!) ── */
+        .border-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 25;
+            border-radius: 16px;
+        }
+
+        .stream-1 {
+            fill: none;
+            stroke-linecap: round;
+            stroke: var(--theme-color);
+            stroke-width: 2.8px;
+            stroke-dasharray: 140 450;
+            filter: drop-shadow(0 0 8px var(--theme-color)) drop-shadow(0 0 14px var(--theme-dark));
+            animation: flowMove 2.6s linear infinite;
+        }
+
+        .stream-2 {
+            fill: none;
+            stroke-linecap: round;
+            /* STRICT COLOR HARMONY: Matches Theme Bright/Accent - NO RED ON GOLD/VOID! */
+            stroke: var(--theme-bright);
+            stroke-width: 1.8px;
+            stroke-dasharray: 70 520;
+            filter: drop-shadow(0 0 6px var(--theme-bright));
+            animation: flowMoveRev 3.4s linear infinite;
+        }
+
+        /* Armored Hex Bolts in Corners */
+        .bolt-hex-plate {
+            fill: #181409;
+            stroke: var(--theme-color);
+            stroke-width: 1.8px;
+            filter: drop-shadow(0 0 6px var(--theme-color));
+        }
+
+        .bolt-socket {
+            fill: #060502;
+            stroke: rgba(255, 255, 255, 0.25);
+            stroke-width: 1px;
+        }
+
+        .bolt-core {
+            fill: var(--theme-bright);
+            filter: drop-shadow(0 0 5px var(--theme-bright));
+        }
+
+        /* ── Stage Cyber Chassis Wrapper ── */
+        .stage-wrapper {
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: var(--theme-bg-grad);
+            border: 1.8px solid var(--theme-box-border);
+            box-shadow: inset 0 0 18px var(--theme-glow-soft), inset 0 0 30px rgba(0, 0, 0, 0.95);
+            padding: 6px 11px 5px 11px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* ── BIDIRECTIONAL HORIZONTAL LASER DROPS (LEFT-TO-RIGHT + RIGHT-TO-LEFT) ── */
+        .laser-drops-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 15;
+            mix-blend-mode: screen;
+            border-radius: 16px;
+        }
+
+        /* 1. LEFT TO RIGHT LASER DROPS */
+        .laser-drop-h {
+            position: absolute;
+            height: 3.5px;
+            background: linear-gradient(to right, transparent 0%, var(--theme-color) 35%, #ffffff 80%, var(--theme-bright) 100%);
+            border-radius: 3px;
+            opacity: 0;
+            filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px var(--theme-bright)) drop-shadow(0 0 20px var(--theme-color));
+            animation: laserDropLeftToRight 2s cubic-bezier(0.4, 0.0, 0.7, 1) infinite;
+        }
+
+        /* Glowing right-pointing neon droplet head */
+        .laser-drop-h::after {
+            content: '';
+            position: absolute;
+            right: -2px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6.5px;
+            height: 6.5px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 8px #ffffff, 0 0 16px var(--theme-bright), 0 0 26px var(--theme-color);
+        }
+
+        /* 2. RIGHT TO LEFT LASER DROPS */
+        .laser-drop-rtl {
+            position: absolute;
+            height: 3.5px;
+            background: linear-gradient(to left, transparent 0%, var(--theme-color) 35%, #ffffff 80%, var(--theme-bright) 100%);
+            border-radius: 3px;
+            opacity: 0;
+            filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px var(--theme-bright)) drop-shadow(0 0 20px var(--theme-color));
+            animation: laserDropRightToLeft 2s cubic-bezier(0.4, 0.0, 0.7, 1) infinite;
+        }
+
+        /* Glowing left-pointing neon droplet head */
+        .laser-drop-rtl::after {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6.5px;
+            height: 6.5px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 8px #ffffff, 0 0 16px var(--theme-bright), 0 0 26px var(--theme-color);
+        }
+
+        /* Left-to-Right Tracks (LTR) */
+        .ld-ltr-1  { top: 16px;  width: 95px;  animation-duration: 1.7s; animation-delay: 0.1s; }
+        .ld-ltr-2  { top: 44px;  width: 75px;  animation-duration: 1.4s; animation-delay: 1.1s; }
+        .ld-ltr-3  { top: 72px;  width: 125px; animation-duration: 2.0s; animation-delay: 0.4s; }
+        .ld-ltr-4  { top: 114px; width: 85px;  animation-duration: 1.6s; animation-delay: 1.5s; }
+        .ld-ltr-5  { top: 128px; width: 135px; animation-duration: 2.2s; animation-delay: 0.2s; }
+        .ld-ltr-6  { top: 156px; width: 90px;  animation-duration: 1.5s; animation-delay: 1.8s; }
+        .ld-ltr-7  { top: 184px; width: 115px; animation-duration: 1.8s; animation-delay: 0.7s; }
+        .ld-ltr-8  { top: 206px; width: 80px;  animation-duration: 1.6s; animation-delay: 1.3s; }
+        .ld-ltr-9  { top: 222px; width: 110px; animation-duration: 2.1s; animation-delay: 0.3s; }
+
+        /* Right-to-Left Tracks (RTL) */
+        .ld-rtl-1  { top: 28px;  width: 110px; animation-duration: 1.9s; animation-delay: 0.3s; }
+        .ld-rtl-2  { top: 58px;  width: 80px;  animation-duration: 1.5s; animation-delay: 1.0s; }
+        .ld-rtl-3  { top: 86px;  width: 130px; animation-duration: 2.1s; animation-delay: 0.2s; }
+        .ld-rtl-4  { top: 114px; width: 95px;  animation-duration: 1.7s; animation-delay: 1.4s; }
+        .ld-rtl-5  { top: 142px; width: 120px; animation-duration: 2.0s; animation-delay: 0.6s; }
+        .ld-rtl-6  { top: 170px; width: 75px;  animation-duration: 1.4s; animation-delay: 1.7s; }
+        .ld-rtl-7  { top: 198px; width: 105px; animation-duration: 1.8s; animation-delay: 0.8s; }
+        .ld-rtl-8  { top: 10px;  width: 135px; animation-duration: 2.3s; animation-delay: 1.2s; }
+        .ld-rtl-9  { top: 216px; width: 85px;  animation-duration: 1.6s; animation-delay: 0.5s; }
+
+        /* ── STAGE HEADER: Title, ACTV Status Badge, and Close Button ── */
+        .stage-header {
+            position: relative;
+            z-index: 30;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3px;
+            padding: 0 10px 0 16px;
+            /* Balanced clearance from top-left corner circle */
+            cursor: grab;
+        }
+
+        .stage-header:active {
+            cursor: grabbing;
+        }
+
+        .brand-header-left {
+            position: relative;
+            z-index: 32;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding-left: 2px;
+        }
+
+        /* ── HEADER LOGO FRAME (Cyber Violet / Neon Purple Frame matching SMALL Badge) ── */
+        .header-logo-frame {
+            position: relative;
+            z-index: 35;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 0 5px rgba(168, 85, 247, 0.6)) drop-shadow(0 0 10px rgba(192, 132, 252, 0.35));
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
+            cursor: pointer;
+            margin-right: 3px;
+        }
+
+        .header-logo-frame:hover {
+            transform: scale(1.06);
+            filter: drop-shadow(0 0 8px #c084fc) drop-shadow(0 0 14px #a855f7);
+        }
+
+        /* Subtle Refined Violet Backlight (Tamed & Contained - No Blinding Bloom) */
+        .header-logo-backlight {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(233, 213, 255, 0.45) 0%, rgba(168, 85, 247, 0.25) 50%, transparent 75%);
+            opacity: 0.55;
+            filter: blur(4px);
+            animation: logoBacklightPulse 3s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes logoBacklightPulse {
+            0% {
+                transform: scale(0.92);
+                opacity: 0.4;
+            }
+            100% {
+                transform: scale(1.06);
+                opacity: 0.6;
+            }
+        }
+
+        .header-logo-svg-frame {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 4;
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        .hl-hex-outer {
+            fill: none;
+            stroke: #c084fc;
+            stroke-width: 2;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+            filter: drop-shadow(0 0 3px #a855f7) drop-shadow(0 0 6px rgba(168, 85, 247, 0.5));
+        }
+
+        .hl-hex-inner {
+            fill: none;
+            stroke: #e9d5ff;
+            stroke-width: 0.9;
+            opacity: 0.85;
+        }
+
+        .hl-hex-node {
+            fill: #f472b6;
+            filter: drop-shadow(0 0 3px #f472b6);
+        }
+
+        .hl-hex-corner {
+            fill: #ffffff;
+            filter: drop-shadow(0 0 2px #e9d5ff);
+        }
+
+        .header-logo-clip {
+            position: relative;
+            width: 36px;
+            height: 36px;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            background: radial-gradient(circle at 50% 35%, rgba(168, 85, 247, 0.45) 0%, rgba(15, 8, 26, 0.98) 75%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            overflow: hidden;
+            box-shadow: inset 0 0 8px rgba(168, 85, 247, 0.4);
+        }
+
+        .header-logo-inner-light {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(192, 132, 252, 0.3) 0%, transparent 75%);
+            opacity: 0.55;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .header-logo-clip img {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 15%;
+            display: block;
+            filter: contrast(1.15) brightness(1.18) saturate(1.25);
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo-frame:hover .header-logo-clip img {
+            transform: scale(1.08);
+        }
+
+        .main-title {
+            font-family: 'Permanent Marker', 'Orbitron', cursive, sans-serif;
+            font-size: 17px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: var(--theme-color);
+            text-shadow: 0 0 10px var(--theme-color), 0 0 20px var(--theme-dark);
+            line-height: 1;
+            animation: shadowTextGlow 3s infinite;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            /* Proper clear space between title words */
+        }
+
+        .main-title #titleName {
+            letter-spacing: 1.5px;
+        }
+
+        .main-title .x-span {
+            font-size: 18px;
+            color: #ffffff;
+            text-shadow: 0 0 12px var(--theme-color), 0 0 25px var(--theme-bright);
+            letter-spacing: 1.5px;
+        }
+
+        .sub-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 7px;
+            letter-spacing: 3px;
+            color: var(--theme-steel);
+            text-transform: uppercase;
+            margin-top: 1px;
+        }
+
+        /* Golden Laser Trail extending from INJECTOR */
+        .header-laser-trail {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 50px;
+            height: 12px;
+            margin-left: 4px;
+            opacity: 0.9;
+            flex-shrink: 0;
+        }
+
+        .laser-beam-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--theme-color) 0%, rgba(254, 240, 138, 0.9) 75%, #ffffff 100%);
+            box-shadow: 0 0 8px var(--theme-color), 0 0 12px var(--theme-bright);
+            border-radius: 2px;
+        }
+
+        .laser-beam-head {
+            position: absolute;
+            right: -2px;
+            width: 5.5px;
+            height: 5.5px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 8px var(--theme-bright), 0 0 14px #ffffff, 0 0 20px var(--theme-color);
+            animation: beamHeadGlow 1.6s ease-in-out infinite alternate;
+        }
+
+        @keyframes beamHeadGlow {
+            0% {
+                transform: scale(0.9);
+                box-shadow: 0 0 6px var(--theme-bright), 0 0 10px #ffffff;
+            }
+            100% {
+                transform: scale(1.3);
+                box-shadow: 0 0 12px var(--theme-bright), 0 0 18px #ffffff, 0 0 24px var(--theme-color);
+            }
+        }
+
+        /* Header Right Controls: ACTV Badge + Close Button */
+        .header-controls-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Signature ACTV / STBY / DONE Pill Badge */
+        .status-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 8px;
+            font-weight: 900;
+            color: var(--theme-color);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2px 8px;
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 10px var(--theme-glow), inset 0 0 5px var(--theme-glow-soft);
+            letter-spacing: .8px;
+            transition: all .3s ease;
+        }
+
+        /* Single Clean Close Button */
+        .single-close-btn {
+            width: 20px;
+            height: 20px;
+            background: rgba(20, 15, 10, 0.85);
+            border: 1.2px solid var(--theme-color);
+            border-radius: 4px;
+            color: var(--theme-steel);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .single-close-btn:hover {
+            color: #fff;
+            border-color: var(--theme-bright);
+            background: rgba(120, 40, 10, 0.6);
+            box-shadow: 0 0 10px var(--theme-glow);
+        }
+
+        /* ==========================================================================
+           MAIN RECTANGULAR BODY: 
+           Col 1 (Tabs: 78px) | Col 2 (Content: 1fr) | Col 3 (Witch Photo: 145px)
+           ========================================================================== */
+        .stage-main-grid {
+            display: grid;
+            grid-template-columns: 78px 1fr 145px;
+            gap: 8px;
+            flex-grow: 1;
+            position: relative;
+            z-index: 20;
+            margin-bottom: 3px;
+            overflow: hidden;
+        }
+
+        /* ── COLUMN 1: LEFT VERTICAL TABS (INJECT, SKINS, SETTINGS) ── */
+        .vertical-tabs-col {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .v-tab-btn {
+            height: 38px;
+            border-radius: 6px;
+            background: rgba(16, 14, 8, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--theme-steel);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 7.5px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .v-tab-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+            transition: all 0.2s;
+        }
+
+        .v-tab-btn:hover {
+            color: #ffffff;
+            border-color: var(--theme-color);
+            background: rgba(30, 24, 12, 0.85);
+            box-shadow: 0 0 10px var(--theme-glow-soft);
+        }
+
+        .v-tab-btn.active {
+            background: linear-gradient(135deg, var(--theme-dark) 0%, rgba(15, 12, 5, 0.95) 100%);
+            border: 1.5px solid var(--theme-color);
+            color: #ffffff;
+            box-shadow: 0 0 12px var(--theme-glow), inset 0 0 8px var(--theme-glow-soft);
+            text-shadow: 0 0 6px var(--theme-bright);
+        }
+
+        .v-tab-btn.active svg {
+            fill: var(--theme-bright);
+            filter: drop-shadow(0 0 4px var(--theme-bright));
+        }
+
+        /* ── COLUMN 2: CENTER CONTENT (Clean, one-by-one, no weird gaps) ── */
+        .right-content-col {
+            position: relative;
+            background: var(--theme-inner-bg);
+            border-radius: 8px;
+            border: 1.2px solid var(--theme-box-border);
+            box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.95);
+            padding: 3.5px 6.5px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ── NEXT-LEVEL HOLOGRAPHIC LASER SWEEP BEAM ── */
+        .laser-beam {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2.5px;
+            background: linear-gradient(90deg, transparent 0%, var(--theme-color) 20%, #ffffff 50%, var(--theme-bright) 80%, transparent 100%);
+            box-shadow: 0 0 10px var(--theme-bright), 0 0 20px var(--theme-color);
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 1;
+            animation: laserSweep 3.2s ease-in-out infinite;
+        }
+
+        @keyframes laserSweep {
+            0% {
+                top: 0%;
+                opacity: 0.2;
+            }
+
+            15% {
+                opacity: 0.75;
+            }
+
+            50% {
+                top: 96%;
+                opacity: 0.75;
+            }
+
+            85% {
+                opacity: 0.75;
+            }
+
+            100% {
+                top: 0%;
+                opacity: 0.2;
+            }
+        }
+
+        /* VIEW 1: INJECT (Proper one-by-one vertical stack, NO awkward gap) */
+        #viewInject {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            gap: 3.5px;
+            height: 100%;
+            justify-content: flex-start;
+        }
+
+        /* ── CYBER TELEMETRY INSTRUMENT PANEL ── */
+        .telemetry-table {
+            position: relative;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: linear-gradient(180deg, rgba(18, 14, 8, 0.9) 0%, rgba(6, 5, 2, 0.95) 100%);
+            background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);
+            border: 1.2px solid var(--theme-box-border);
+            border-radius: 6px;
+            padding: 2px 7px 3.5px 7px;
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.8), 0 0 8px var(--theme-glow-soft);
+            overflow: visible;
+            flex-shrink: 0 !important;
+            min-height: 56px;
+        }
+
+        /* Tactical Top Header Bar */
+        .tele-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1px;
+            padding-bottom: 1.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .tele-matrix-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 6px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--theme-steel);
+            text-transform: uppercase;
+        }
+
+        .tele-matrix-badge {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 6px;
+            font-weight: 700;
+            color: var(--theme-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 2.5px;
+            letter-spacing: 0.6px;
+        }
+
+        .pulse-dot {
+            width: 3.5px;
+            height: 3.5px;
+            border-radius: 50%;
+            background: var(--theme-bright);
+            box-shadow: 0 0 5px var(--theme-bright);
+            animation: dot-pulse 1.2s infinite;
+        }
+
+        .tele-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 7.5px;
+            font-family: 'Share Tech Mono', monospace;
+            padding: 0;
+            line-height: 1.15;
+            height: 10px;
+            flex-shrink: 0 !important;
+            transition: all 0.2s ease;
+        }
+
+        .tele-row:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .tele-lbl {
+            color: var(--theme-steel);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            font-size: 7.5px;
+        }
+
+        /* Cyber Dotted Connector Line */
+        .tele-dots {
+            flex: 1;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+            margin: 0 5px;
+            height: 1px;
+            opacity: 0.75;
+        }
+
+        .tele-val {
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 2.5px;
+            font-size: 7.5px;
+            letter-spacing: 0.4px;
+        }
+
+        .game-val {
+            color: #e2e8f0;
+            text-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+        }
+
+        .theme-val {
+            color: var(--theme-color);
+            text-shadow: 0 0 6px var(--theme-glow-soft);
+        }
+
+        /* Sonar Ripple on Online Status Dot */
+        .sonar-dot {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 7px;
+            height: 7px;
+            margin-right: 2px;
+        }
+
+        .sonar-wave {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            border: 1px solid var(--theme-bright);
+            animation: sonarPulse 1.8s ease-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sonarPulse {
+            0% {
+                transform: scale(0.6);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2.8);
+                opacity: 0;
+            }
+        }
+
+        .dot {
+            width: 3.5px;
+            height: 3.5px;
+            border-radius: 50%;
+            background: var(--theme-bright);
+            box-shadow: 0 0 6px var(--theme-bright), 0 0 10px var(--theme-color);
+        }
+
+        /* Bypass Micro Badge */
+        .bypass-badge {
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid var(--theme-color);
+            border-radius: 3px;
+            padding: 0 3.5px;
+            font-size: 6.5px;
+            line-height: 8.5px;
+            height: 9px;
+            display: inline-flex;
+            align-items: center;
+            letter-spacing: 0.6px;
+            box-shadow: 0 0 5px var(--theme-glow-soft);
+            color: var(--theme-bright);
+        }
+
+        /* Ping Signal Bars */
+        .tele-ping-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 3.5px;
+            height: 10px;
+        }
+
+        .ping-bars {
+            display: inline-flex;
+            align-items: flex-end;
+            gap: 1.2px;
+            height: 6.5px;
+            padding-bottom: 0px;
+        }
+
+        .p-bar {
+            width: 1.6px;
+            border-radius: 1px;
+            background: var(--theme-bright);
+            box-shadow: 0 0 3px var(--theme-color);
+        }
+
+        .p-bar.b1 { height: 2px; }
+        .p-bar.b2 { height: 3.5px; }
+        .p-bar.b3 { height: 5px; }
+        .p-bar.b4 {
+            height: 6.5px;
+            animation: pingPulse 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pingPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        /* ── DYNAMIC LIVE RESULT / STANDBY DISPLAY ── */
+        #tele-result-display {
+            flex-grow: 1;
+            position: relative;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.85) 75%);
+            border: 1.2px solid var(--theme-box-border);
+            border-radius: 6px;
+            padding: 2px 4px 1px 4px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.95), 0 0 8px var(--theme-glow-soft);
+            overflow: hidden;
+            min-height: 54px;
+        }
+
+        /* Tactical Reticle Corners */
+        .reticle-corner {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            pointer-events: none;
+            z-index: 3;
+            opacity: 0.9;
+        }
+
+        .reticle-tl {
+            top: 2px;
+            left: 2px;
+            border-top: 1.5px solid var(--theme-bright);
+            border-left: 1.5px solid var(--theme-bright);
+        }
+
+        .reticle-tr {
+            top: 2px;
+            right: 2px;
+            border-top: 1.5px solid var(--theme-bright);
+            border-right: 1.5px solid var(--theme-bright);
+        }
+
+        .reticle-bl {
+            bottom: 2px;
+            left: 2px;
+            border-bottom: 1.5px solid var(--theme-bright);
+            border-left: 1.5px solid var(--theme-bright);
+        }
+
+        .reticle-br {
+            bottom: 2px;
+            right: 2px;
+            border-bottom: 1.5px solid var(--theme-bright);
+            border-right: 1.5px solid var(--theme-bright);
+        }
+
+        /* Holographic Scanline Sweep */
+        .display-scan-sweep {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, var(--theme-bright), transparent);
+            opacity: 0.35;
+            pointer-events: none;
+            z-index: 2;
+            animation: displayScanSweep 2.8s ease-in-out infinite;
+        }
+
+        @keyframes displayScanSweep {
+            0% { top: 0%; opacity: 0; }
+            20% { opacity: 0.45; }
+            80% { opacity: 0.45; }
+            100% { top: 96%; opacity: 0; }
+        }
+
+        /* Animated Cyber Equalizer Spectrum */
+        .cyber-eq-viz {
+            position: absolute;
+            bottom: 2px;
+            left: 8px;
+            right: 8px;
+            height: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            opacity: 0.22;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .eq-col {
+            width: 2.5px;
+            min-height: 2px;
+            background: linear-gradient(180deg, var(--theme-bright), var(--theme-color));
+            border-radius: 1px;
+            box-shadow: 0 0 3px var(--theme-glow);
+            animation: eqBounce 0.9s ease-in-out infinite alternate;
+        }
+
+        @keyframes eqBounce {
+            0% { height: 2px; }
+            100% { height: 14px; }
+        }
+
+        /* ── NEXT-LEVEL RESULT DISPLAY STRUCTURE ── */
+        #tele-normal-view {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px 1px;
+        }
+
+        /* 1. Top Meta Header Strip */
+        .res-meta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 4px;
+            margin-bottom: 0px;
+        }
+
+        .res-seq-badge {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 7.5px;
+            font-weight: 700;
+            color: var(--theme-bright);
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--theme-box-border);
+            border-radius: 8px;
+            padding: 1px 7px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            box-shadow: 0 0 6px var(--theme-glow-soft);
+        }
+
+        .seq-icon {
+            color: var(--theme-color);
+            font-size: 8px;
+        }
+
+        .res-accuracy-pill {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 7px;
+            font-weight: 700;
+            color: #4ade80;
+            letter-spacing: 0.6px;
+            background: rgba(4, 32, 12, 0.6);
+            border: 1px solid rgba(74, 222, 128, 0.4);
+            border-radius: 8px;
+            padding: 1px 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3.5px;
+            box-shadow: 0 0 6px rgba(74, 222, 128, 0.25);
+        }
+
+        .acc-dot {
+            width: 3.5px;
+            height: 3.5px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 5px #4ade80;
+            animation: dot-pulse 1s infinite;
+        }
+
+        /* 2. Main Hero Center Display */
+        .res-hero-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            flex-grow: 1;
+            margin: 0;
+        }
+
+        /* Standby Idle State */
+        .res-standby-pill {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: 'Orbitron', cursive, sans-serif;
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #ffffff;
+            text-shadow: 0 0 10px var(--theme-color), 0 0 20px var(--theme-bright);
+            animation: standbyGlowPulse 2.6s ease-in-out infinite;
+        }
+
+        .standby-bracket {
+            color: var(--theme-color);
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+        /* Active Result Presentation */
+        .res-active-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Tactical Beveled Big / Small Chip */
+        .res-bs-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px 10px;
+            font-family: 'Orbitron', cursive, sans-serif;
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 2.5px;
+            line-height: 1.1;
+            border-radius: 5px;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* BIG: Electric Gold & Cyber Flare */
+        .res-bs-chip.chip-big {
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.42) 0%, rgba(20, 16, 4, 0.98) 100%);
+            border: 2px solid var(--theme-bright);
+            color: #ffffff;
+            text-shadow: 0 0 12px #ffffff, 0 0 24px var(--theme-bright), 0 0 36px var(--theme-color);
+            box-shadow: 0 0 22px var(--theme-glow), inset 0 0 14px rgba(255, 255, 255, 0.4);
+        }
+
+        /* SMALL: Radiant Neon Violet & Purple Flare */
+        .res-bs-chip.chip-small {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.45) 0%, rgba(12, 6, 20, 0.98) 100%);
+            border: 2px solid #e9d5ff;
+            color: #ffffff;
+            text-shadow: 0 0 12px #ffffff, 0 0 24px #c084fc, 0 0 36px #a855f7;
+            box-shadow: 0 0 22px rgba(168, 85, 247, 0.65), inset 0 0 14px rgba(255, 255, 255, 0.4);
+        }
+
+        .bs-glitch-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Divider Cross */
+        .res-chip-divider {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 900;
+            color: var(--theme-steel);
+            opacity: 0.85;
+            text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Glowing Cyber Number Orb */
+        .res-num-orb {
+            width: 35px;
+            height: 28px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.35) 0%, rgba(12, 10, 4, 0.98) 75%);
+            border: 2px solid var(--theme-bright);
+            box-shadow: 0 0 20px var(--theme-glow), inset 0 0 10px rgba(255, 255, 255, 0.4);
+        }
+
+        .num-rolling-text {
+            font-family: 'Permanent Marker', 'Orbitron', sans-serif;
+            font-size: 21px;
+            font-weight: 900;
+            line-height: 1;
+            color: #ffffff;
+            text-shadow: 0 0 12px #ffffff, 0 0 22px var(--theme-bright), 0 0 32px var(--theme-color);
+            position: relative;
+            z-index: 2;
+        }
+
+        .orb-spin-ring {
+            position: absolute;
+            inset: -2px;
+            border-radius: 16px;
+            border: 1.4px dashed var(--theme-bright);
+            opacity: 0.75;
+            animation: rotate-cw 3s linear infinite;
+        }
+
+        /* Shockwave Burst upon Result Lock */
+        .res-shockwave {
+            position: absolute;
+            inset: 0px;
+            border-radius: 6px;
+            border: 2px solid var(--theme-bright);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .shockwave-trigger {
+            animation: shockwaveExplode 0.75s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+
+        @keyframes shockwaveExplode {
+            0% {
+                transform: scale(0.65);
+                opacity: 1;
+                box-shadow: 0 0 15px #ffffff, 0 0 30px var(--theme-bright);
+            }
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+                box-shadow: 0 0 40px var(--theme-color);
+            }
+        }
+
+        /* 3. Bottom Telemetry Subtitle & Cryptographic Hash Stamp */
+        .res-sub-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 6px;
+            margin-bottom: 0px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 6.5px;
+            color: var(--theme-steel);
+            letter-spacing: 0.8px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .res-signal-tag {
+            color: var(--theme-color);
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-shadow: 0 0 4px var(--theme-glow-soft);
+        }
+
+        .res-hash-code {
+            color: var(--theme-steel);
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        @keyframes standbyGlowPulse {
+            0%, 100% {
+                color: #ffffff;
+                text-shadow: 0 0 8px var(--theme-color), 0 0 18px var(--theme-bright);
+                transform: scale(1);
+            }
+            50% {
+                color: #ffffff;
+                text-shadow: 0 0 15px var(--theme-bright), 0 0 28px var(--theme-color), 0 0 38px #ffffff;
+                transform: scale(1.025);
+            }
+        }
+
+        /* ── CHASSIS SCAN OVERDRIVE (Active during Injection Scan) ── */
+        #stage.scan-overdrive {
+            box-shadow: 0 0 35px var(--theme-bright), inset 0 0 25px var(--theme-glow);
+        }
+
+        #stage.scan-overdrive .border-svg .stream-1,
+        #stage.scan-overdrive .border-svg .stream-2 {
+            animation-duration: 0.75s !important;
+            filter: drop-shadow(0 0 10px var(--theme-bright)) drop-shadow(0 0 20px var(--theme-color)) !important;
+            stroke-width: 3.2px !important;
+        }
+
+        #stage.scan-overdrive .laser-beam {
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--theme-color), #ffffff, var(--theme-bright), transparent);
+            box-shadow: 0 0 18px #ffffff, 0 0 30px var(--theme-bright);
+            opacity: 0.95;
+            animation-duration: 1.0s !important;
+        }
+
+        #stage.scan-overdrive #tele-result-display {
+            box-shadow: inset 0 0 28px var(--theme-glow), 0 0 22px var(--theme-bright);
+            border-color: var(--theme-bright);
+        }
+
+        #stage.scan-overdrive .reticle-corner {
+            border-color: #ffffff !important;
+            filter: drop-shadow(0 0 8px var(--theme-bright));
+        }
+
+        /* Full Chassis Animated Laser Grid Sweep Beam */
+        .chassis-scan-sweep {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 4.5px;
+            background: linear-gradient(90deg, transparent 0%, var(--theme-color) 20%, #ffffff 50%, var(--theme-bright) 80%, transparent 100%);
+            box-shadow: 0 0 18px #ffffff, 0 0 35px var(--theme-bright), 0 0 55px var(--theme-color);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 28;
+            border-radius: 2px;
+        }
+
+        #stage.scan-overdrive .chassis-scan-sweep {
+            opacity: 1;
+            animation: chassisLaserSweep 1.25s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes chassisLaserSweep {
+            0% { top: 0%; opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { top: 97%; opacity: 0; }
+        }
+
+
+
+        /* ── NEXT-LEVEL HOLOGRAPHIC SCANNING RADAR LOADER ── */
+        .tele-loader {
+            display: none;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 2;
+            padding: 0 4px;
+        }
+
+        /* Holographic Radar Housing */
+        .holo-radar-wrap {
+            width: 44px;
+            height: 44px;
+            position: relative;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Outer Rotating Tech Degree Ring */
+        .radar-outer-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1.8px dashed var(--theme-bright);
+            box-shadow: 0 0 8px var(--theme-color), inset 0 0 8px var(--theme-glow-soft);
+            animation: rotate-cw 3s linear infinite;
+        }
+
+        /* Inner Counter-Rotating Reticle Crosshair */
+        .radar-inner-cross {
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            animation: rotate-ccw 2s linear infinite;
+        }
+
+        .radar-inner-cross::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-50%);
+        }
+
+        .radar-inner-cross::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateX(-50%);
+        }
+
+        /* 360-Degree Sweeping Conic Beam */
+        .radar-sweep-beam {
+            position: absolute;
+            inset: 2px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0deg, transparent 240deg, var(--theme-glow-soft) 300deg, var(--theme-bright) 360deg);
+            animation: rotate-cw 0.9s linear infinite;
+            opacity: 0.9;
+        }
+
+        /* Center Target Core */
+        .radar-core-dot {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 6px #ffffff, 0 0 12px var(--theme-bright);
+            z-index: 2;
+            animation: coreBlink 0.6s ease-in-out infinite alternate;
+        }
+
+        @keyframes coreBlink {
+            0% { transform: scale(0.8); opacity: 0.7; }
+            100% { transform: scale(1.3); opacity: 1; }
+        }
+
+        /* Right Telemetry Feed */
+        .scan-telemetry-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5px;
+            max-width: 175px;
+            text-align: left;
+        }
+
+        .scan-status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .scan-step-tag {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 7.5px;
+            font-weight: 800;
+            color: var(--theme-bright);
+            letter-spacing: 0.8px;
+            text-shadow: 0 0 6px var(--theme-glow);
+        }
+
+        .scan-pct-txt {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 8px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        /* High-Tech Progress Track & Bar */
+        .scan-progress-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--theme-box-border);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.9);
+        }
+
+        .scan-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--theme-color), var(--theme-bright), #ffffff);
+            border-radius: 2px;
+            box-shadow: 0 0 8px var(--theme-bright);
+            transition: width 0.12s ease-out;
+        }
+
+        /* Live Rapid Hex Decryption Feed */
+        .scan-hex-feed {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 7px;
+            color: var(--theme-steel);
+            letter-spacing: 0.6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            opacity: 0.9;
+        }
+
+        /* Result Impact Reveal Flash */
+        .result-impact-flash {
+            animation: resultImpactFlash 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+        }
+
+        @keyframes resultImpactFlash {
+            0% {
+                transform: scale(0.6);
+                opacity: 0;
+                filter: blur(5px) brightness(2.8);
+                text-shadow: 0 0 35px #ffffff, 0 0 60px var(--theme-bright);
+            }
+            50% {
+                transform: scale(1.12);
+                opacity: 1;
+                filter: blur(0px) brightness(1.7);
+                text-shadow: 0 0 25px var(--theme-bright), 0 0 40px var(--theme-color);
+            }
+            100% {
+                transform: scale(1);
+                filter: blur(0px) brightness(1);
+                text-shadow: 0 0 10px var(--theme-color), 0 0 20px var(--theme-bright);
+            }
+        }
+
+        /* VIEW 2: SKINS (Royal Gold, Void Purple, Blood Red, Ice Frost, Toxic Acid) */
+        #viewSkins {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+
+        #viewSkins::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        #viewSkins::-webkit-scrollbar-thumb {
+            background: var(--theme-color);
+        }
+
+        .skin-option-card {
+            background: rgba(14, 12, 6, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .skin-option-card:hover {
+            border-color: var(--theme-color);
+            background: rgba(26, 22, 12, 0.85);
+        }
+
+        .skin-option-card.active-skin {
+            border-color: var(--theme-color);
+            background: rgba(234, 179, 8, 0.15);
+            box-shadow: 0 0 8px var(--theme-glow-soft);
+        }
+
+        .skin-meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skin-palette-circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            box-shadow: 0 0 6px currentColor;
+        }
+
+        .skin-name {
+            font-size: 8.5px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.8px;
+        }
+
+        .skin-tag-badge {
+            font-size: 7px;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--theme-steel);
+        }
+
+        .active-skin .skin-tag-badge {
+            background: var(--theme-color);
+            color: #000000;
+        }
+
+        /* VIEW 3: SETTINGS (One by one, clean gap, NO space-around) */
+        #viewSettings {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            height: 100%;
+            justify-content: flex-start;
+        }
+
+        .setting-target-block {
+            background: rgba(12, 10, 5, 0.75);
+            border: 1px solid var(--theme-box-border);
+            border-radius: 5px;
+            padding: 4px 6px;
+        }
+
+        .target-header-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 7.5px;
+            font-weight: 700;
+            color: var(--theme-steel);
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+        .target-pills-row {
+            display: flex;
+            gap: 4px;
+        }
+
+        .target-pill-btn {
+            flex: 1;
+            height: 18px;
+            border-radius: 3px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 7.5px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .target-pill-btn.active {
+            background: var(--theme-color);
+            color: #000000;
+            border-color: var(--theme-color);
+            box-shadow: 0 0 6px var(--theme-color);
+        }
+
+        .setting-item {
+            background: rgba(12, 10, 5, 0.75);
+            border: 1px solid var(--theme-box-border);
+            border-radius: 5px;
+            padding: 5px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 8px;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .sub-switch {
+            width: 28px;
+            height: 14px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.15);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sub-switch .sw-dot {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #94a3b8;
+            transition: all 0.2s;
+        }
+
+        .sub-switch.active {
+            background: var(--theme-dark);
+            border: 1px solid var(--theme-color);
+        }
+
+        .sub-switch.active .sw-dot {
+            left: 15px;
+            background: var(--theme-color);
+            box-shadow: 0 0 5px var(--theme-bright);
+        }
+
+        /* ── COLUMN 3: WITCH PHOTO (CLEANED - NO TOP BUTTONS! + BREATHING EFFECT) ── */
+        .witch-photo-col {
+            position: relative;
+            z-index: 25;
+            border-radius: 8px;
+            border: 1.5px solid var(--theme-box-border);
+            background: radial-gradient(circle at 50% 30%, #201a0a 0%, #060502 100%);
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9), 0 0 14px var(--theme-glow-soft);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+        }
+
+        /* Breathing Aura behind photo/video */
+        .photo-aura-ring {
+            position: absolute;
+            inset: 6px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--theme-glow) 0%, transparent 70%);
+            animation: auraPulseRing 3.2s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Dual-layer Cyber Hacker Video Player */
+        .witch-char-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            border-radius: 6px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+            z-index: 2;
+            background: #000;
+        }
+
+        .witch-char-video.active {
+            opacity: 1;
+            z-index: 3;
+        }
+
+
+
+        /* Cleaned Witch Image Fallback (if video not loaded) */
+        .witch-breathing-img {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            border-radius: 6px;
+            animation: photoBreathe 3.2s ease-in-out infinite alternate;
+            will-change: transform, filter;
+        }
+
+        /* Subtle Scanline on Photo/Video */
+        .witch-photo-col::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(0deg,
+                    rgba(0, 0, 0, 0.22) 0px,
+                    rgba(0, 0, 0, 0.22) 1px,
+                    transparent 1px,
+                    transparent 3px);
+            pointer-events: none;
+            z-index: 5;
+            border-radius: 8px;
+        }
+
+        /* ── BOTTOM ACTION ROW (INJECT + HIDE) ── */
+        .bottom-action-area {
+            display: flex;
+            gap: 8px;
+            height: 28px;
+            position: relative;
+            z-index: 10;
+        }
+
+        button#spd-start {
+            flex: 1.4;
+            height: 100%;
+            border-radius: 6px;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 10.5px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #ffffff;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, #100d04 0%, var(--theme-dark) 25%, var(--theme-color) 50%, var(--theme-dark) 75%, #100d04 100%);
+            background-size: 300% 100%;
+            animation: flowAurora 4s ease-in-out infinite;
+            box-shadow: 0 3px 10px var(--theme-glow-soft), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+            transition: all 0.2s;
+        }
+
+        button#spd-start::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transform: skewX(-20deg);
+            animation: glareSweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            pointer-events: none;
+        }
+
+        button#spd-start:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px var(--theme-glow);
+        }
+
+        button#spd-start:active {
+            transform: scale(0.98);
+        }
+
+        button#spd-hide {
+            flex: 0.6;
+            height: 100%;
+            border-radius: 6px;
+            border: 1px solid var(--theme-box-border);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 9.5px;
+            letter-spacing: 1px;
+            color: #ffffff;
+            cursor: pointer;
+            background: linear-gradient(90deg, rgba(16, 14, 8, 0.95), rgba(30, 26, 14, 0.95));
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+            transition: all 0.2s;
+        }
+
+        button#spd-hide:hover {
+            border-color: var(--theme-color);
+            color: var(--theme-bright);
+        }
+
+        /* ── STAGE FOOTER BAR ── */
+        .stage-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 7px;
+            font-weight: 700;
+            color: var(--theme-steel-dim);
+            letter-spacing: 1.8px;
+            margin-top: 3px;
+            padding: 0 26px;
+            position: relative;
+            z-index: 30;
+        }
+
+        .stage-footer span {
+            opacity: 0.85;
+            text-shadow: 0 0 6px var(--theme-dark);
+            transition: color 0.2s ease, opacity 0.2s ease;
+        }
+
+        .stage-footer span:hover {
+            color: var(--theme-bright);
+            opacity: 1;
+            text-shadow: 0 0 8px var(--theme-glow);
+        }
+
+        /* ── RESPONSIVE MOBILE TWEAKS (Under 580px) ── */
+        @media (max-width: 580px) {
+            #stage {
+                width: calc(100vw - 16px);
+                left: 8px !important;
+                height: 232px;
+                top: 12px;
+            }
+
+            .stage-main-grid {
+                grid-template-columns: 70px 1fr 115px;
+                gap: 6px;
+            }
+
+            .main-title {
+                font-size: 15px;
+            }
+
+            .header-logo-frame {
+                width: 36px;
+                height: 36px;
+            }
+
+            .header-logo-clip {
+                width: 30px;
+                height: 30px;
+            }
+
+            .header-logo-backlight {
+                inset: -4px;
+            }
+
+            .header-laser-trail {
+                width: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body class="theme-dragon">
+
+    <!-- Background Website Iframe (Preserves real background app) -->
+    <iframe id="bgFrame" src="{web}"></iframe>
+
+    <!-- MINI FLOATING FAB (Themed Ball with Clean Witch Avatar) -->
+    <div id="mini" title="Click to Open Injector">
+        <div id="spd-fab-core">
+            <div id="spd-fab-icon">
+                <img id="spd-fab-img" src="witch_clean.png" alt="Witch Avatar" onerror="this.src='witch_crop.png'">
+            </div>
+            <div id="spd-fab-dot"></div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         STAGE PANEL: RECTANGULAR CHASSIS (1/4 Mobile Screen Ratio)
+         ========================================================================== -->
+    <div id="stage">
+        <!-- SVG Concentric Animated Border (Stream 1 & Stream 2 perfectly match Theme!) -->
+        <svg class="border-svg" viewBox="0 0 550 235" preserveAspectRatio="none">
+            <rect class="stream-1" x="2" y="2" width="546" height="231" rx="14" ry="14" />
+            <rect class="stream-2" x="2" y="2" width="546" height="231" rx="14" ry="14" />
+            <!-- Armored Corner Bolts -->
+            <g transform="translate(14, 14)">
+                <polygon points="0,-8 7,-4 7,4 0,8 -7,4 -7,-4" class="bolt-hex-plate" />
+                <circle cx="0" cy="0" r="3.5" class="bolt-socket" />
+                <circle cx="0" cy="0" r="1.8" class="bolt-core" />
+            </g>
+            <g transform="translate(536, 14)">
+                <polygon points="0,-8 7,-4 7,4 0,8 -7,4 -7,-4" class="bolt-hex-plate" />
+                <circle cx="0" cy="0" r="3.5" class="bolt-socket" />
+                <circle cx="0" cy="0" r="1.8" class="bolt-core" />
+            </g>
+            <g transform="translate(14, 221)">
+                <polygon points="0,-8 7,-4 7,4 0,8 -7,4 -7,-4" class="bolt-hex-plate" />
+                <circle cx="0" cy="0" r="3.5" class="bolt-socket" />
+                <circle cx="0" cy="0" r="1.8" class="bolt-core" />
+            </g>
+            <g transform="translate(536, 221)">
+                <polygon points="0,-8 7,-4 7,4 0,8 -7,4 -7,-4" class="bolt-hex-plate" />
+                <circle cx="0" cy="0" r="3.5" class="bolt-socket" />
+                <circle cx="0" cy="0" r="1.8" class="bolt-core" />
+            </g>
+        </svg>
+
+        <div class="stage-wrapper">
+
+            <!-- BIDIRECTIONAL HORIZONTAL LASER DROPS (LEFT-TO-RIGHT & RIGHT-TO-LEFT) -->
+            <div class="laser-drops-container">
+                <!-- Left-to-Right Drops -->
+                <div class="laser-drop-h ld-ltr-1"></div>
+                <div class="laser-drop-h ld-ltr-2"></div>
+                <div class="laser-drop-h ld-ltr-3"></div>
+                <div class="laser-drop-h ld-ltr-4"></div>
+                <div class="laser-drop-h ld-ltr-5"></div>
+                <div class="laser-drop-h ld-ltr-6"></div>
+                <div class="laser-drop-h ld-ltr-7"></div>
+                <div class="laser-drop-h ld-ltr-8"></div>
+                <div class="laser-drop-h ld-ltr-9"></div>
+
+                <!-- Right-to-Left Drops -->
+                <div class="laser-drop-rtl ld-rtl-1"></div>
+                <div class="laser-drop-rtl ld-rtl-2"></div>
+                <div class="laser-drop-rtl ld-rtl-3"></div>
+                <div class="laser-drop-rtl ld-rtl-4"></div>
+                <div class="laser-drop-rtl ld-rtl-5"></div>
+                <div class="laser-drop-rtl ld-rtl-6"></div>
+                <div class="laser-drop-rtl ld-rtl-7"></div>
+                <div class="laser-drop-rtl ld-rtl-8"></div>
+                <div class="laser-drop-rtl ld-rtl-9"></div>
+            </div>
+
+            <!-- Full Chassis Animated Laser Sweep Beam -->
+            <div class="chassis-scan-sweep"></div>
+
+            <!-- STAGE HEADER (Title, ACTV Status Badge, and Close Button) -->
+            <div class="stage-header" id="stageDragHandle">
+                <div class="brand-header-left">
+                    <div class="header-logo-frame" title="Royal Gold System">
+                        <div class="header-logo-backlight"></div>
+                        <svg class="header-logo-svg-frame" viewBox="0 0 42 42">
+                            <polygon points="11,2 31,2 40,21 31,40 11,40 2,21" class="hl-hex-outer" />
+                            <polygon points="13,5.5 29,5.5 36.5,21 29,36.5 13,36.5 5.5,21" class="hl-hex-inner" />
+                            <circle cx="2" cy="21" r="1.8" class="hl-hex-node" />
+                            <circle cx="40" cy="21" r="1.8" class="hl-hex-node" />
+                            <circle cx="21" cy="2" r="1.4" class="hl-hex-corner" />
+                            <circle cx="21" cy="40" r="1.4" class="hl-hex-corner" />
+                        </svg>
+                        <div class="header-logo-clip">
+                            <div class="header-logo-inner-light"></div>
+                            <img id="headerLogoImg" src="witch_clean.png" alt="Royal Gold Logo" onerror="this.src='royal_gold_logo.png'">
+                        </div>
+                    </div>
+                    <div class="main-title">
+                        <span id="titleName">ROYAL</span><span class="x-span">GOLD</span>
+                    </div>
+                    <span class="sub-title">INJECTOR</span>
+                    <div class="header-laser-trail">
+                        <span class="laser-beam-line"></span>
+                        <span class="laser-beam-head"></span>
+                    </div>
+                </div>
+
+                <div class="header-controls-right">
+                    <!-- Status Badge: ACTV (from user reference image snippet) -->
+                    <div class="status-badge" id="spd-badge">ACTV</div>
+                    <!-- Single Clean Close Button -->
+                    <div class="single-close-btn" onclick="closeCard()" title="Hide Injector">✕</div>
+                </div>
+            </div>
+
+            <!-- MAIN BODY: Left 3 Tabs + Middle Telemetry/Settings + Right Breathing Photo -->
+            <div class="stage-main-grid">
+
+                <!-- ── COLUMN 1: VERTICAL TABS (INJECT, SKINS, SETTINGS) ── -->
+                <div class="vertical-tabs-col">
+                    <!-- Tab 1: INJECT -->
+                    <button class="v-tab-btn active" id="tabInject" onclick="switchTab('inject')">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19.7 4.3c-.4-.4-1-.4-1.4 0l-1.9 1.9-2.3-2.3c-.4-.4-1-.4-1.4 0s-.4 1 0 1.4l2.3 2.3-9.5 9.5c-.2.2-.3.4-.3.7v3.2c0 .6.4 1 1 1h3.2c.3 0 .5-.1.7-.3l9.5-9.5 2.3 2.3c.4.4 1 .4 1.4 0s.4-1 0-1.4l-2.3-2.3 1.9-1.9c.4-.4.4-1 0-1.4l-3.5-3.5zM8.9 19.5H6.5v-2.4l9-9 2.4 2.4-9 9z" />
+                        </svg>
+                        <span>INJECT</span>
+                    </button>
+                    <!-- Tab 2: SKINS -->
+                    <button class="v-tab-btn" id="tabSkins" onclick="switchTab('skins')">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.28 19.57 10.59 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-4 7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm4-3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm4 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z" />
+                        </svg>
+                        <span>SKINS</span>
+                    </button>
+                    <!-- Tab 3: SETTINGS -->
+                    <button class="v-tab-btn" id="tabSettings" onclick="switchTab('settings')">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+                        </svg>
+                        <span>SETTINGS</span>
+                    </button>
+                </div>
+
+                <!-- ── COLUMN 2: CENTER CONTENT (One-by-one, compact, no gaps) ── -->
+                <div class="right-content-col" id="rightContainer">
+                    <div class="laser-beam"></div>
+
+                    <!-- VIEW 1: INJECT (Telemetry Table + Live Result Box - Stacked One by One) -->
+                    <div id="viewInject">
+                        <!-- Telemetry Grid (Stacked neatly one by one) -->
+                        <div class="telemetry-table">
+                            <!-- Top Mini Header Bar -->
+                            <div class="tele-top-bar">
+                                <span class="tele-matrix-title">CORE METRICS</span>
+                                <span class="tele-matrix-badge"><span class="pulse-dot"></span>SYS-LINK</span>
+                            </div>
+                            <div class="tele-row">
+                                <span class="tele-lbl">STATUS</span>
+                                <span class="tele-dots"></span>
+                                <span class="tele-val theme-val"><span class="sonar-dot"><span class="sonar-wave"></span><span class="dot"></span></span>ONLINE</span>
+                            </div>
+                            <div class="tele-row">
+                                <span class="tele-lbl">GAME</span>
+                                <span class="tele-dots"></span>
+                                <span class="tele-val game-val">DETECTED</span>
+                            </div>
+                            <div class="tele-row">
+                                <span class="tele-lbl">BYPASS</span>
+                                <span class="tele-dots"></span>
+                                <span class="tele-val theme-val"><span class="bypass-badge">ACTIVE</span></span>
+                            </div>
+                            <div class="tele-row">
+                                <span class="tele-lbl">PING</span>
+                                <span class="tele-dots"></span>
+                                <div class="tele-ping-wrap">
+                                    <span class="tele-val" id="hudPingVal">14 MS</span>
+                                    <div class="ping-bars">
+                                        <span class="p-bar b1"></span>
+                                        <span class="p-bar b2"></span>
+                                        <span class="p-bar b3"></span>
+                                        <span class="p-bar b4"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Live Result Screen (Neatly underneath) -->
+                        <div id="tele-result-display">
+                            <!-- Tactical Reticle Corners -->
+                            <div class="reticle-corner reticle-tl"></div>
+                            <div class="reticle-corner reticle-tr"></div>
+                            <div class="reticle-corner reticle-bl"></div>
+                            <div class="reticle-corner reticle-br"></div>
+
+                            <!-- Shockwave Burst Ring upon Result Lock -->
+                            <div class="res-shockwave" id="resShockwave"></div>
+
+                            <!-- Holographic Scanline Sweep -->
+                            <div class="display-scan-sweep"></div>
+
+                            <!-- Cyber Equalizer Frequency Spectrum (12 Bars) -->
+                            <div class="cyber-eq-viz">
+                                <span class="eq-col" style="animation-delay: 0.1s; animation-duration: 0.8s;"></span>
+                                <span class="eq-col" style="animation-delay: 0.4s; animation-duration: 1.1s;"></span>
+                                <span class="eq-col" style="animation-delay: 0.2s; animation-duration: 0.7s;"></span>
+                                <span class="eq-col" style="animation-delay: 0.6s; animation-duration: 1.3s;"></span>
+                                <span class="eq-col" style="animation-delay: 0.3s; animation-duration: 0.9s;"></span>
+                                <span class="eq-col" style="animation-delay: 0.5s; animation-duration: 0.75s;"></span>
+                                <span class="eq-col" style="animation-delay: 0.15s; animation-duration: 1.2s;"></span>
+                                <span class="eq-col" style="animation-delay: 0.45s; animation-duration: 0.85s;"></span>
+                                <span class="eq-col" style="animation-delay: 0.25s; animation-duration: 1.0s;"></span>
+                                <span class="eq-col" style="animation-delay: 0.55s; animation-duration: 0.65s;"></span>
+                                <span class="eq-col" style="animation-delay: 0.35s; animation-duration: 1.15s;"></span>
+                                <span class="eq-col" style="animation-delay: 0.05s; animation-duration: 0.95s;"></span>
+                            </div>
+
+                            <div id="tele-normal-view">
+                                <!-- Top Sequence & Accuracy Strip -->
+                                <div class="res-meta-header">
+                                    <span class="res-seq-badge" id="periodDisplay"><span class="seq-icon">⚡</span> <span id="periodText">SYS READY</span></span>
+                                    <span class="res-accuracy-pill" id="accuracyPill"><span class="acc-dot"></span><span id="accuracyText">98.8% WIN ACC</span></span>
+                                </div>
+
+                                <!-- Main Dynamic Hero Display (Standby or Big/Small + Number) -->
+                                <div class="res-hero-display" id="resultHero">
+                                    <!-- Standby View (Initial) -->
+                                    <div class="res-standby-pill" id="standbyWrap">
+                                        <span class="standby-bracket">«</span>
+                                        <span class="standby-txt">STANDBY</span>
+                                        <span class="standby-bracket">»</span>
+                                    </div>
+
+                                    <!-- Active Result Content (Shown on injection) -->
+                                    <div class="res-active-wrap" id="activeResultWrap" style="display: none;">
+                                        <!-- Big/Small Badge with Beveled Cut & Glow -->
+                                        <div class="res-bs-chip chip-big" id="resBsChip">
+                                            <span class="bs-glitch-text" id="resBsText">BIG</span>
+                                        </div>
+
+                                        <!-- Tactical Cyber Divider -->
+                                        <span class="res-chip-divider">✕</span>
+
+                                        <!-- Glowing Cyber Number Orb with Spinning Ring -->
+                                        <div class="res-num-orb" id="resNumOrb">
+                                            <span class="num-rolling-text" id="resNumText">7</span>
+                                            <div class="orb-spin-ring"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hidden proxy for backward compatibility -->
+                                    <span id="resultTextDisplay" style="display:none;">STANDBY</span>
+                                </div>
+
+                                <!-- Bottom Telemetry Subtitle & Cryptographic Hash Stamp -->
+                                <div class="res-sub-footer">
+                                    <span class="res-signal-tag" id="resSignalTag">[ AWAITING INJECTION ]</span>
+                                    <span class="res-hash-code" id="resHashCode">HASH: 0x7F2A</span>
+                                </div>
+                            </div>
+                            <!-- Next-Level Holographic Radar Loader during scan -->
+                            <div class="tele-loader" id="teleLoader">
+                                <!-- Left: Holographic Dual-Ring Radar with 360° Sweep -->
+                                <div class="holo-radar-wrap">
+                                    <div class="radar-outer-ring"></div>
+                                    <div class="radar-inner-cross"></div>
+                                    <div class="radar-sweep-beam"></div>
+                                    <div class="radar-core-dot"></div>
+                                </div>
+
+                                <!-- Right: Tactical Scan Info & Hex Decryption -->
+                                <div class="scan-telemetry-info">
+                                    <div class="scan-status-row">
+                                        <span class="scan-step-tag" id="scanStepTitle">INITIALIZING...</span>
+                                        <span class="scan-pct-txt" id="scanPctReadout">0%</span>
+                                    </div>
+                                    <div class="scan-progress-track">
+                                        <div class="scan-progress-bar" id="scanProgressBar"></div>
+                                    </div>
+                                    <div class="scan-hex-feed" id="scanHexStream">0x7F2A :: CONNECTING</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VIEW 2: SKINS (Royal Gold, Void Purple, Blood Red, Ice Frost, Toxic Acid) -->
+                    <div id="viewSkins">
+                        <!-- 1. Royal Gold (Default) -->
+                        <div class="skin-option-card active-skin" id="skinCardDragon"
+                            onclick="applySkin('theme-dragon', 'skinCardDragon')">
+                            <div class="skin-meta">
+                                <div class="skin-palette-circle" style="background:#eab308; color:#eab308;"></div>
+                                <span class="skin-name">ROYAL GOLD</span>
+                            </div>
+                            <span class="skin-tag-badge">ACTIVE</span>
+                        </div>
+
+                        <!-- 2. Void Purple (Pure Void, no red border) -->
+                        <div class="skin-option-card" id="skinCardVoid"
+                            onclick="applySkin('theme-void', 'skinCardVoid')">
+                            <div class="skin-meta">
+                                <div class="skin-palette-circle" style="background:#a855f7; color:#a855f7;"></div>
+                                <span class="skin-name">VOID PURPLE</span>
+                            </div>
+                            <span class="skin-tag-badge">SELECT</span>
+                        </div>
+
+                        <!-- 3. Blood Red -->
+                        <div class="skin-option-card" id="skinCardRed" onclick="applySkin('theme-red', 'skinCardRed')">
+                            <div class="skin-meta">
+                                <div class="skin-palette-circle" style="background:#ff1a1a; color:#ff1a1a;"></div>
+                                <span class="skin-name">BLOOD RED</span>
+                            </div>
+                            <span class="skin-tag-badge">SELECT</span>
+                        </div>
+
+                        <!-- 4. Ice Frost -->
+                        <div class="skin-option-card" id="skinCardIce" onclick="applySkin('theme-ice', 'skinCardIce')">
+                            <div class="skin-meta">
+                                <div class="skin-palette-circle" style="background:#00d0ff; color:#00d0ff;"></div>
+                                <span class="skin-name">ICE FROST</span>
+                            </div>
+                            <span class="skin-tag-badge">SELECT</span>
+                        </div>
+
+                        <!-- 5. Toxic Acid -->
+                        <div class="skin-option-card" id="skinCardToxic"
+                            onclick="applySkin('theme-toxic', 'skinCardToxic')">
+                            <div class="skin-meta">
+                                <div class="skin-palette-circle" style="background:#00ff33; color:#00ff33;"></div>
+                                <span class="skin-name">TOXIC ACID</span>
+                            </div>
+                            <span class="skin-tag-badge">SELECT</span>
+                        </div>
+                    </div>
+
+                    <!-- VIEW 3: SETTINGS (Stacked One by One, compact, no awkward gaps) -->
+                    <div id="viewSettings">
+                        <!-- Option 1: Target Prediction -->
+                        <div class="setting-target-block">
+                            <div class="target-header-row">
+                                <span>TARGET PREDICTION</span>
+                                <span id="targetSettingsStatus" style="color:var(--theme-bright);">[AUTO]</span>
+                            </div>
+                            <div class="target-pills-row">
+                                <button class="target-pill-btn active" id="pillAuto"
+                                    onclick="setTargetMode('AUTO')">AUTO</button>
+                                <button class="target-pill-btn" id="pillBig" onclick="setTargetMode('BIG')">BIG</button>
+                                <button class="target-pill-btn" id="pillSmall"
+                                    onclick="setTargetMode('SMALL')">SMALL</button>
+                            </div>
+                        </div>
+
+                        <!-- Option 2: Audio FX Toggle -->
+                        <div class="setting-item">
+                            <span>AUDIO FX</span>
+                            <div class="sub-switch active" id="audioToggleSwitch"
+                                onclick="toggleSubSwitch(this, toggleAudio)">
+                                <div class="sw-dot"></div>
+                            </div>
+                        </div>
+
+                        <!-- Option 3: Reset Position to TOP (User Requirement) -->
+                        <div class="setting-item">
+                            <span>RESET POSITION</span>
+                            <button
+                                style="background:var(--theme-dark); border:1px solid var(--theme-color); color:#fff; font-size:7.5px; font-weight:800; padding:3px 10px; border-radius:4px; cursor:pointer;"
+                                onclick="resetWindowPosition()">RESET TO TOP</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── COLUMN 3: CYBER HACKER VIDEO (DUAL LAYER: BEFORE LOOP & AFTER INJECT) ── -->
+                <div class="witch-photo-col" id="witchPhotoCol" title="Live Biometric Uplink">
+                    <div class="photo-aura-ring"></div>
+
+                    <!-- Dual Layer Video Feeds -->
+                    <video id="witchVidBefore" class="witch-char-video active" src="before inject.mp4" autoplay loop muted playsinline preload="auto"></video>
+                    <video id="witchVidAfter" class="witch-char-video" src="after inject.mp4" muted playsinline preload="auto"></video>
+
+
+                </div>
+
+            </div>
+
+            <!-- SIGNATURE ACTION BUTTON ROW (INJECT + HIDE) -->
+            <div class="bottom-action-area">
+                <button id="spd-start" onclick="runInjection()">
+                    <span id="startBtnTxt">INJECT</span>
+                </button>
+                <button id="spd-hide" onclick="closeCard()">HIDE</button>
+            </div>
+
+            <!-- FOOTER BAR -->
+            <div class="stage-footer">
+                <span>SHADOW X v2.0</span>
+                <span>PLAY BEYOND LIMITS</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         CORE JAVASCRIPT: Exact 2nd Shadow Logic + Top-Dock Reset + Audio
+         ========================================================================== -->
+    <script>
+        let isWorking = false;
+        let opened = true;
+        let targetMode = 'AUTO'; // 'AUTO', 'BIG', 'SMALL'
+        let audioEnabled = true;
+        let currentSkin = 'theme-dragon';
+
+        const mini = document.getElementById("mini");
+        const stage = document.getElementById("stage");
+        const startBtn = document.getElementById("spd-start");
+        const startBtnTxt = document.getElementById("startBtnTxt");
+        const periodDisplay = document.getElementById("periodDisplay");
+        const resultTextDisplay = document.getElementById("resultTextDisplay");
+        const teleNormalView = document.getElementById("tele-normal-view");
+        const teleLoader = document.getElementById("teleLoader");
+        const targetSettingsStatus = document.getElementById("targetSettingsStatus");
+        const spdBadge = document.getElementById("spd-badge");
+        const hudPingVal = document.getElementById("hudPingVal");
+
+        // Dual Video Feeds
+        const vidBefore = document.getElementById("witchVidBefore");
+        const vidAfter = document.getElementById("witchVidAfter");
+
+        // Injection Animation and Video Synchronization Timers
+        let injectTimers = [];
+        let hexTimer = null;
+        let scanProgressTimer = null;
+        let autoRevertTimer = null;
+
+        // Web Audio API Sound Synthesizer
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    const AC = window.AudioContext || window.webkitAudioContext;
+                    if (AC) this.ctx = new AC();
+                }
+            },
+            click() {
+                if (!audioEnabled) return;
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(850, now);
+                    osc.frequency.exponentialRampToValueAtTime(220, now + 0.05);
+                    gain.gain.setValueAtTime(0.18, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } catch (e) { }
+            },
+            decryptTick() {
+                if (!audioEnabled) return;
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(1200 + Math.random() * 400, now);
+                    osc.frequency.exponentialRampToValueAtTime(500, now + 0.025);
+                    gain.gain.setValueAtTime(0.09, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.025);
+                } catch (e) { }
+            },
+            scanStep(freq = 600) {
+                if (!audioEnabled) return;
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(freq, now);
+                    osc.frequency.exponentialRampToValueAtTime(freq * 1.6, now + 0.08);
+                    gain.gain.setValueAtTime(0.14, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } catch (e) { }
+            },
+            success() {
+                if (!audioEnabled) return;
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.18);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.22);
+                } catch (e) { }
+            }
+        };
+
+        function updateBadge(text, color) {
+            if (!spdBadge) return;
+            spdBadge.innerText = text;
+            spdBadge.style.color = color;
+            spdBadge.style.borderColor = color;
+            spdBadge.style.boxShadow = `0 0 10px ${color}, inset 0 0 5px ${color}`;
+        }
+
+        // Switch between INJECT, SKINS, SETTINGS (Clean 3 Tabs)
+        function switchTab(tab) {
+            AudioFX.click();
+            ['tabInject', 'tabSkins', 'tabSettings'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active');
+            });
+            ['viewInject', 'viewSkins', 'viewSettings'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+
+            if (tab === 'inject') {
+                document.getElementById('tabInject').classList.add('active');
+                document.getElementById('viewInject').style.display = 'flex';
+            } else if (tab === 'skins') {
+                document.getElementById('tabSkins').classList.add('active');
+                document.getElementById('viewSkins').style.display = 'flex';
+            } else if (tab === 'settings') {
+                document.getElementById('tabSettings').classList.add('active');
+                document.getElementById('viewSettings').style.display = 'flex';
+            }
+        }
+
+        // Target Prediction Mode: AUTO / BIG / SMALL
+        function setTargetMode(mode) {
+            AudioFX.click();
+            targetMode = mode;
+            ['pillAuto', 'pillBig', 'pillSmall'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.classList.remove('active');
+            });
+
+            if (mode === 'AUTO') {
+                document.getElementById('pillAuto').classList.add('active');
+            } else if (mode === 'BIG') {
+                document.getElementById('pillBig').classList.add('active');
+            } else if (mode === 'SMALL') {
+                document.getElementById('pillSmall').classList.add('active');
+            }
+
+            if (targetSettingsStatus) targetSettingsStatus.innerText = '[' + mode + ']';
+        }
+
+        // USER EXPLICIT REQUIREMENT: Reset window position strictly to TOP, not mid!
+        function resetWindowPosition() {
+            AudioFX.click();
+            stage.style.transition = 'left 0.3s ease-out, top 0.3s ease-out';
+            stage.style.top = '16px'; // STRICTLY TOP of mobile app screen!
+            stage.style.left = 'calc(50% - ' + (stage.offsetWidth / 2) + 'px)';
+            setTimeout(() => { stage.style.transition = ''; }, 320);
+        }
+
+        function toggleSubSwitch(el, callback) {
+            AudioFX.click();
+            el.classList.toggle('active');
+            if (typeof callback === 'function') callback();
+        }
+
+        function toggleAudio() {
+            audioEnabled = document.getElementById('audioToggleSwitch').classList.contains('active');
+        }
+
+        // Dynamic Skins Switcher (Royal Gold, Void Purple, Blood Red, Ice Frost, Toxic Acid)
+        function applySkin(themeClass, cardId) {
+            AudioFX.click();
+            currentSkin = themeClass;
+            document.body.className = themeClass;
+
+            const title = document.getElementById('titleName');
+            const xspan = document.querySelector('.main-title .x-span');
+            if (themeClass === 'theme-dragon') {
+                title.innerText = 'ROYAL';
+                xspan.innerText = 'GOLD';
+            } else if (themeClass === 'theme-void') {
+                title.innerText = 'VOID';
+                xspan.innerText = 'PURPLE';
+            } else if (themeClass === 'theme-red') {
+                title.innerText = 'SHADOW';
+                xspan.innerText = 'X';
+            } else if (themeClass === 'theme-ice') {
+                title.innerText = 'ICE';
+                xspan.innerText = 'FROST';
+            } else if (themeClass === 'theme-toxic') {
+                title.innerText = 'TOXIC';
+                xspan.innerText = 'CYBER';
+            }
+
+            ['skinCardDragon', 'skinCardVoid', 'skinCardRed', 'skinCardIce', 'skinCardToxic'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.classList.remove('active-skin');
+                    const badge = el.querySelector('.skin-tag-badge');
+                    if (badge) badge.innerText = 'SELECT';
+                }
+            });
+
+            const activeCard = document.getElementById(cardId);
+            if (activeCard) {
+                activeCard.classList.add('active-skin');
+                const badge = activeCard.querySelector('.skin-tag-badge');
+                if (badge) badge.innerText = 'ACTIVE';
+            }
+
+            updateBadge('ACTV', 'var(--theme-color)');
+        }
+
+        // ── NEXT-LEVEL MATRIX CIPHER & DIGITAL ROLLING DECRYPTION ──
+        function decryptMatrixText(el, targetText, durationMs = 850) {
+            if (!el) return;
+            const cyberGlyphs = '⚡⟁⬡Ø█▓▒94X7K#$!ΨΩ';
+            const startTime = performance.now();
+            const len = targetText.length;
+            let tickCount = 0;
+
+            let animInterval = setInterval(() => {
+                const elapsed = performance.now() - startTime;
+                const progress = Math.min(1, elapsed / durationMs);
+                const resolvedChars = Math.floor(progress * len);
+
+                tickCount++;
+                if (tickCount % 2 === 0) {
+                    AudioFX.decryptTick();
+                }
+
+                let out = '';
+                for (let i = 0; i < len; i++) {
+                    if (i < resolvedChars) {
+                        out += targetText[i];
+                    } else {
+                        out += cyberGlyphs[Math.floor(Math.random() * cyberGlyphs.length)];
+                    }
+                }
+                el.innerText = out;
+
+                if (progress >= 1) {
+                    clearInterval(animInterval);
+                    el.innerText = targetText;
+                }
+            }, 36);
+        }
+
+        function rollNumberTo(el, targetNum, durationMs = 850) {
+            if (!el) return;
+            const startTime = performance.now();
+            let rollInterval = setInterval(() => {
+                const elapsed = performance.now() - startTime;
+                const progress = Math.min(1, elapsed / durationMs);
+
+                if (progress >= 1) {
+                    clearInterval(rollInterval);
+                    el.innerText = targetNum;
+                } else {
+                    el.innerText = Math.floor(Math.random() * 10);
+                }
+            }, 34);
+        }
+
+        function showNextLevelResult(period, bs, num) {
+            const standbyWrap = document.getElementById('standbyWrap');
+            const activeResultWrap = document.getElementById('activeResultWrap');
+            const periodText = document.getElementById('periodText');
+            const resBsChip = document.getElementById('resBsChip');
+            const resBsText = document.getElementById('resBsText');
+            const resNumText = document.getElementById('resNumText');
+            const resSignalTag = document.getElementById('resSignalTag');
+            const resHashCode = document.getElementById('resHashCode');
+            const resultTextDisplay = document.getElementById('resultTextDisplay');
+            const resShockwave = document.getElementById('resShockwave');
+
+            if (standbyWrap) standbyWrap.style.display = 'none';
+            if (activeResultWrap) activeResultWrap.style.display = 'flex';
+
+            if (periodText) periodText.innerText = 'SEQ: #' + period;
+            if (resultTextDisplay) resultTextDisplay.innerText = bs + ' ' + num;
+
+            if (resSignalTag) resSignalTag.innerText = '[ LOCK CONFIRMED ]';
+            if (resHashCode) {
+                const hex = Math.floor(Math.random() * 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+                resHashCode.innerText = 'HASH: 0x' + hex;
+            }
+
+            if (resBsChip) {
+                resBsChip.className = 'res-bs-chip ' + (bs === 'BIG' ? 'chip-big' : 'chip-small');
+            }
+
+            decryptMatrixText(resBsText, bs, 850);
+            rollNumberTo(resNumText, num, 850);
+
+            // Trigger Shockwave Burst
+            if (resShockwave) {
+                resShockwave.classList.remove('shockwave-trigger');
+                void resShockwave.offsetWidth; // force DOM reflow
+                resShockwave.classList.add('shockwave-trigger');
+            }
+
+            if (activeResultWrap) {
+                activeResultWrap.classList.add('result-impact-flash');
+                setTimeout(() => {
+                    activeResultWrap.classList.remove('result-impact-flash');
+                }, 850);
+            }
+        }
+
+        // Injection Action (Synchronized 7s Cyber Video Animation & Live Result Flow)
+        async function runInjection() {
+            if (isWorking) return;
+            isWorking = true;
+
+            // Clear any lingering timers from previous runs
+            injectTimers.forEach(t => clearTimeout(t));
+            injectTimers = [];
+            if (hexTimer) { clearInterval(hexTimer); hexTimer = null; }
+            if (scanProgressTimer) { clearInterval(scanProgressTimer); scanProgressTimer = null; }
+
+            AudioFX.scanStep(440);
+
+            // 1. Enter Overdrive Mode (Accelerate SVG borders, laser beam & holographic HUD)
+            stage.classList.add('scan-overdrive');
+            updateBadge('INJECT', 'var(--theme-bright)');
+            switchTab('inject');
+
+            startBtn.disabled = true;
+            startBtnTxt.innerText = 'INJECTING...';
+
+            teleNormalView.style.display = 'none';
+            teleLoader.style.display = 'flex';
+
+            // 2. Cross-fade Video to "after inject.mp4" (Animation Video - Permanently Silent)
+            if (vidBefore && vidAfter) {
+                vidBefore.classList.remove('active');
+                vidAfter.classList.add('active');
+                vidAfter.currentTime = 0;
+                vidAfter.muted = true;
+                vidAfter.volume = 0;
+                vidAfter.play().catch(() => {});
+                injectTimers.push(setTimeout(() => {
+                    if (!vidBefore.classList.contains('active')) {
+                        vidBefore.pause();
+                    }
+                }, 350));
+            }
+
+
+
+            // Reset Scan Indicators
+            const stepTitle = document.getElementById('scanStepTitle');
+            const pctReadout = document.getElementById('scanPctReadout');
+            const progressBar = document.getElementById('scanProgressBar');
+            const hexStream = document.getElementById('scanHexStream');
+
+            if (stepTitle) stepTitle.innerText = 'ESTABLISHING UPLINK...';
+            if (pctReadout) pctReadout.innerText = '0%';
+            if (progressBar) progressBar.style.width = '0%';
+
+            // Rapid Hex Code Generator Stream
+            const hexNodes = [
+                '0x4F9B :: RNG_BYPASS',
+                '0x7A11 :: PACKET_SYNC',
+                '0xDF02 :: ALGO_MATCH',
+                '0x88C4 :: SEED_RESOLVED',
+                '0x33E1 :: BUFFER_INJECT',
+                '0xBA90 :: MATRIX_LOCK',
+                '0x10FF :: CALC_HASH',
+                '0x9C4E :: ACCESS_BURST',
+                '0x2E81 :: PROTOCOL_SEC',
+                '0xAA55 :: KERNEL_HOOK'
+            ];
+            let hexIdx = 0;
+            hexTimer = setInterval(() => {
+                if (hexStream) {
+                    hexStream.innerText = hexNodes[hexIdx % hexNodes.length] + ' [' + Math.floor(Math.random() * 899 + 100) + ']';
+                    hexIdx++;
+                }
+            }, 45);
+
+            // Smooth 0% -> 100% Progress Bar synchronized with ~7.0s Video
+            const scanStartTime = performance.now();
+            const scanDuration = 7000; // ~7 seconds exact animation match
+            scanProgressTimer = setInterval(() => {
+                const elapsed = performance.now() - scanStartTime;
+                const progress = Math.min(100, Math.floor((elapsed / scanDuration) * 100));
+                if (pctReadout) pctReadout.innerText = progress + '%';
+                if (progressBar) progressBar.style.width = progress + '%';
+            }, 35);
+
+            // Stage Milestones synchronized across 7 Seconds:
+            // Milestone 1: 1.4s
+            injectTimers.push(setTimeout(() => {
+                if (!isWorking) return;
+                AudioFX.scanStep(600);
+                if (stepTitle) stepTitle.innerText = 'BYPASSING FIREWALL...';
+            }, 1400));
+
+            // Milestone 2: 2.8s
+            injectTimers.push(setTimeout(() => {
+                if (!isWorking) return;
+                AudioFX.scanStep(780);
+                if (stepTitle) stepTitle.innerText = 'PROBING SEED HASH...';
+            }, 2800));
+
+            // Milestone 3: 4.4s
+            injectTimers.push(setTimeout(() => {
+                if (!isWorking) return;
+                AudioFX.scanStep(960);
+                if (stepTitle) stepTitle.innerText = 'INJECTING ALGORITHM...';
+            }, 4400));
+
+            // Milestone 4: 5.8s
+            injectTimers.push(setTimeout(() => {
+                if (!isWorking) return;
+                AudioFX.scanStep(1150);
+                if (stepTitle) stepTitle.innerText = 'DECRYPTING ACCESS KEY...';
+            }, 5800));
+
+            // Milestone 5: 6.5s (Matches Video "SERVER CONNECTED ACCESS GRANTED" Burst)
+            injectTimers.push(setTimeout(() => {
+                if (!isWorking) return;
+                AudioFX.scanStep(1350);
+                if (stepTitle) stepTitle.innerText = 'SERVER ACCESS GRANTED!';
+
+            }, 6500));
+
+            // Milestone 6: 7.0s (Final Climax: Lock Result & Switch back to before inject)
+            injectTimers.push(setTimeout(() => {
+                if (hexTimer) { clearInterval(hexTimer); hexTimer = null; }
+                if (scanProgressTimer) { clearInterval(scanProgressTimer); scanProgressTimer = null; }
+
+                let fallbackNum = Math.floor(Math.random() * 10);
+                let fallbackBs = "";
+                if (targetMode === 'BIG') {
+                    fallbackBs = "BIG";
+                    fallbackNum = Math.floor(Math.random() * 5) + 5;
+                } else if (targetMode === 'SMALL') {
+                    fallbackBs = "SMALL";
+                    fallbackNum = Math.floor(Math.random() * 5);
+                } else {
+                    fallbackBs = fallbackNum <= 4 ? "SMALL" : "BIG";
+                }
+
+                let d = new Date();
+                let m = d.getUTCHours() * 60 + d.getUTCMinutes();
+                let javaPeriod = String(10001 + m).slice(-4);
+
+                // Exit Overdrive
+                stage.classList.remove('scan-overdrive');
+                teleLoader.style.display = 'none';
+                teleNormalView.style.display = 'flex';
+
+                // Display Next-Level Cipher Result
+                showNextLevelResult(javaPeriod, fallbackBs, fallbackNum);
+
+                AudioFX.success();
+                updateBadge('DONE', '#ffffff');
+
+                startBtn.disabled = false;
+                startBtnTxt.innerText = 'RE-INJECT';
+                isWorking = false;
+
+                // 3. Seamlessly switch video back to "before inject.mp4" (Permanently Silent)
+                if (vidBefore && vidAfter) {
+                    vidAfter.classList.remove('active');
+                    injectTimers.push(setTimeout(() => {
+                        if (!vidAfter.classList.contains('active')) {
+                            vidAfter.pause();
+                        }
+                    }, 350));
+
+                    vidBefore.classList.add('active');
+                    vidBefore.currentTime = 0;
+                    vidBefore.muted = true;
+                    vidBefore.volume = 0;
+                    vidBefore.play().catch(() => {});
+                }
+
+                injectTimers.push(setTimeout(() => {
+                    if (!isWorking && opened) {
+                        updateBadge('ACTV', 'var(--theme-color)');
+                    }
+                }, 2500));
+            }, 7000));
+        }
+
+        // Draggable Handler for Stage and Mini FAB
+        function makeDraggable(el, clickCallback) {
+            let sx = 0, sy = 0, ox = 0, oy = 0, isDragging = false, hasMoved = false;
+
+            function touchStart(e) {
+                if (e.target.tagName.toLowerCase() === 'button' || e.target.closest('button')) return;
+                let p = e.touches ? e.touches[0] : e;
+                sx = p.clientX; sy = p.clientY;
+                let comp = window.getComputedStyle(el);
+                ox = parseInt(comp.left, 10); oy = parseInt(comp.top, 10);
+                isDragging = true; hasMoved = false;
+                el.style.transition = 'none';
+            }
+
+            function touchMove(e) {
+                if (!isDragging) return;
+                let p = e.touches ? e.touches[0] : e;
+                let dx = p.clientX - sx, dy = p.clientY - sy;
+                if (Math.abs(dx) > 4 || Math.abs(dy) > 4) hasMoved = true;
+                let nx = Math.max(4, Math.min(window.innerWidth - el.offsetWidth - 4, ox + dx));
+                let ny = Math.max(4, Math.min(window.innerHeight - el.offsetHeight - 4, oy + dy));
+                el.style.left = nx + 'px'; el.style.top = ny + 'px';
+                if (e.cancelable) e.preventDefault();
+            }
+
+            function touchEnd(e) {
+                if (!isDragging) return;
+                isDragging = false;
+                el.style.transition = "left 0.12s ease-out, top 0.12s ease-out";
+                if (!hasMoved && typeof clickCallback === 'function') clickCallback();
+                setTimeout(() => { el.style.transition = ''; }, 150);
+            }
+
+            el.addEventListener("touchstart", touchStart, { passive: false });
+            document.addEventListener("touchmove", touchMove, { passive: false });
+            document.addEventListener("touchend", touchEnd, { passive: false });
+            el.addEventListener("mousedown", touchStart, false);
+            document.addEventListener("mousemove", touchMove, false);
+            document.addEventListener("mouseup", touchEnd, false);
+        }
+
+        function openCard() {
+            if (opened) return;
+            AudioFX.click();
+            opened = true;
+            mini.style.display = 'none';
+            stage.style.display = 'block';
+            stage.classList.remove('spd-close');
+            updateBadge('ACTV', 'var(--theme-color)');
+        }
+
+        function closeCard() {
+            if (!opened) return;
+            AudioFX.click();
+            opened = false;
+            stage.classList.add('spd-close');
+            setTimeout(() => {
+                if (!opened) {
+                    stage.style.display = 'none';
+                    stage.classList.remove('spd-close');
+                    mini.style.display = 'flex';
+                }
+            }, 200);
+        }
+
+        // Live Ping Simulation
+        setInterval(() => {
+            if (hudPingVal) {
+                const ms = Math.floor(Math.random() * 5) + 12;
+                hudPingVal.innerText = ms + ' MS';
+            }
+        }, 2500);
+
+        // Bind Dragging & Initial Position to TOP
+        makeDraggable(mini, openCard);
+        makeDraggable(stage, null);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            resetWindowPosition();
+            updateBadge('ACTV', 'var(--theme-color)');
+        });
+    </script>
+</body>
+
+</html>

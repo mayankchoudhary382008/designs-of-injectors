@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEXUS X INJECTOR</title>
+    <!-- Premium Fonts: Orbitron, Rajdhani, Share Tech Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --nexus-orange: #ff6a00;
+            --nexus-orange-bright: #ff8c00;
+            --nexus-orange-glow: rgba(255, 106, 0, 0.6);
+            --nexus-cyan: #00f0ff;
+            --nexus-cyan-glow: rgba(0, 240, 255, 0.5);
+            --nexus-green: #00ff88;
+            --nexus-steel: #8e9eb5;
+            --nexus-steel-dim: #4d5e73;
+            --nexus-bg: #070a10;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', 'Orbitron', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        /* ── Core Background (Transparent for Mobile App Overlays) ── */
+        body {
+            background: transparent !important;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            color: #fff;
+            pointer-events: none;
+        }
+        
+        /* Standalone browser fallback background */
+        .app-bg-standalone {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, #0c121e 0%, #030508 100%);
+            z-index: -2;
+            display: none;
+        }
+
+        #bgFrame {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: -1;
+            pointer-events: auto;
+        }
+
+        /* ── Ambient Floating Particles ── */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* ── Animations ── */
+        @keyframes fab-float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-4px) rotate(2deg); } }
+        @keyframes rotate-cw { to { transform: rotate(360deg); } }
+        @keyframes rotate-ccw { to { transform: rotate(-360deg); } }
+        @keyframes dot-pulse { 0%, 100% { transform: scale(.85); opacity: .7; } 50% { transform: scale(1.15); opacity: 1; } }
+        @keyframes spdFadeIn { 0% { opacity: 0; transform: scale(0.92); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes spdFadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.92); } }
+        @keyframes flowMove { to { stroke-dashoffset: -800; } }
+        @keyframes flowMoveRev { to { stroke-dashoffset: 800; } }
+        @keyframes auraBlast { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(2.8); opacity: 0.15; } }
+        @keyframes textRise { 0% { opacity: 0; transform: translateY(12px) scale(0.85); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes xGlowPulse { 0%, 100% { text-shadow: 0 0 10px var(--nexus-orange), 0 0 20px var(--nexus-orange-bright); } 50% { text-shadow: 0 0 18px var(--nexus-orange), 0 0 30px #fff; } }
+        @keyframes rx { 0% { transform: rotateY(35deg) rotateZ(45deg) rotateX(0deg); } 100% { transform: rotateY(35deg) rotateZ(45deg) rotateX(360deg); } }
+        @keyframes ry { 0% { transform: rotateX(45deg) rotateZ(-35deg) rotateY(0deg); } 100% { transform: rotateX(45deg) rotateZ(-35deg) rotateY(360deg); } }
+        @keyframes laserSweep { 0% { top: 0%; } 50% { top: 96%; } 100% { top: 0%; } }
+
+        /* ==========================================================================
+           MINI FLOATING FAB (Nexus X Minimized Mode)
+           ========================================================================== */
+        #mini {
+            position: absolute;
+            right: 20px;
+            top: 130px;
+            width: 54px;
+            height: 54px;
+            cursor: grab;
+            touch-action: none;
+            z-index: 2147483647;
+            pointer-events: auto;
+            will-change: left, top;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        #mini:active {
+            cursor: grabbing;
+            transform: scale(0.94);
+        }
+
+        #spd-fab-core {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 35% 25%, #253346, #090d15 75%);
+            border: 2px solid var(--nexus-orange);
+            box-shadow: 0 0 20px var(--nexus-orange-glow), inset 0 0 10px rgba(255, 106, 0, 0.4);
+            overflow: hidden;
+            animation: fab-float 3s ease-in-out infinite;
+        }
+        #spd-fab-core:before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: conic-gradient(transparent, var(--nexus-orange), transparent, var(--nexus-cyan), transparent);
+            animation: rotate-cw 2.8s linear infinite;
+        }
+        #spd-fab-core:after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            background: #080c14;
+            z-index: 1;
+        }
+        #spd-fab-icon {
+            position: relative;
+            z-index: 3;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        #spd-fab-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 6px var(--nexus-orange));
+        }
+        #spd-fab-dot {
+            position: absolute;
+            right: 2px;
+            top: 2px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--nexus-green);
+            box-shadow: 0 0 10px var(--nexus-green);
+            z-index: 5;
+            animation: dot-pulse 1.1s infinite;
+        }
+
+        /* ==========================================================================
+           STAGE PANEL: NEXUS X INJECTOR (Compact Mobile Floating Size)
+           ========================================================================== */
+        #stage {
+            display: none;
+            position: absolute;
+            left: calc(50% - 118px);
+            top: calc(50% - 135px);
+            width: 236px;
+            height: 270px;
+            z-index: 2147483647;
+            touch-action: none;
+            cursor: grab;
+            border-radius: 16px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.95), 0 0 30px rgba(255, 106, 0, 0.25);
+            will-change: left, top, opacity;
+            pointer-events: auto;
+        }
+        #stage.spd-open {
+            display: block;
+            animation: spdFadeIn .25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        #stage.spd-close {
+            animation: spdFadeOut .2s ease-in forwards;
+            pointer-events: none;
+        }
+
+        /* ── Glowing Neon Cyber SVG Border Stream ── */
+        .border-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 25;
+            border-radius: 16px;
+        }
+        .stream-1 {
+            fill: none;
+            stroke-linecap: round;
+            stroke: var(--nexus-orange);
+            stroke-width: 2.8px;
+            stroke-dasharray: 110 400;
+            filter: drop-shadow(0 0 8px var(--nexus-orange)) drop-shadow(0 0 14px #cc4400);
+            animation: flowMove 2.6s linear infinite;
+        }
+        .stream-2 {
+            fill: none;
+            stroke-linecap: round;
+            stroke: var(--nexus-cyan);
+            stroke-width: 1.8px;
+            stroke-dasharray: 50 460;
+            filter: drop-shadow(0 0 6px var(--nexus-cyan));
+            animation: flowMoveRev 3.4s linear infinite;
+        }
+
+        /* ── Stage Cyber Chassis Wrapper ── */
+        .stage-wrapper {
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: linear-gradient(165deg, #162030 0%, #090d16 50%, #05070c 100%);
+            border: 1.5px solid rgba(45, 70, 95, 0.6);
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.08), inset 0 0 25px rgba(0, 0, 0, 0.9);
+            padding: 9px 10px 9px 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .panel-grid {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 12px 12px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Sci-Fi Metallic Corner Brackets */
+        .bracket {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-color: var(--nexus-orange);
+            border-style: solid;
+            z-index: 6;
+            pointer-events: none;
+        }
+        .b-tl { top: 5px; left: 5px; border-width: 2px 0 0 2px; border-top-left-radius: 3px; }
+        .b-tr { top: 5px; right: 5px; border-width: 2px 2px 0 0; border-top-right-radius: 3px; }
+        .b-bl { bottom: 5px; left: 5px; border-width: 0 0 2px 2px; border-bottom-left-radius: 3px; }
+        .b-br { bottom: 5px; right: 5px; border-width: 0 2px 2px 0; border-bottom-right-radius: 3px; }
+
+        /* ==========================================================================
+           STAGE HEADER (NEXUS X Title, Status Badge, SINGLE Close Button)
+           ========================================================================== */
+        .stage-header {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3px;
+            padding: 0 2px;
+            cursor: grab;
+        }
+        .stage-header:active {
+            cursor: grabbing;
+        }
+
+        .title-group {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        /* Mini Chrome Delta Sci-Fi Triangle Logo */
+        .mini-delta-logo {
+            width: 19px;
+            height: 19px;
+            filter: drop-shadow(0 0 6px var(--nexus-orange));
+        }
+
+        .brand-text-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 13px;
+            letter-spacing: 1.2px;
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+            line-height: 1.1;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .main-title .x-span {
+            color: var(--nexus-orange);
+            font-size: 14px;
+            animation: xGlowPulse 2.5s infinite;
+        }
+
+        .sub-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 6.5px;
+            letter-spacing: 2px;
+            color: var(--nexus-steel);
+            text-transform: uppercase;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 7.5px;
+            font-weight: 900;
+            color: var(--nexus-green);
+            border: 1px solid var(--nexus-green);
+            border-radius: 9px;
+            padding: 1.5px 5px;
+            background: rgba(0, 255, 136, 0.08);
+            box-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+            letter-spacing: .8px;
+            transition: all .25s ease;
+        }
+
+        /* SINGLE CLEAN CLOSE BUTTON (No duplicate minimize/close confusion) */
+        .single-close-btn {
+            width: 20px;
+            height: 20px;
+            background: rgba(22, 32, 48, 0.85);
+            border: 1px solid rgba(45, 70, 95, 0.6);
+            border-radius: 4px;
+            color: var(--nexus-steel);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .single-close-btn:hover {
+            color: #fff;
+            border-color: #ff3366;
+            background: rgba(220, 20, 60, 0.4);
+            box-shadow: 0 0 8px rgba(255, 51, 102, 0.6);
+        }
+
+        /* Header Cyber Divider */
+        .header-divider {
+            position: relative;
+            z-index: 5;
+            height: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-bottom: 5px;
+        }
+        .divider-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.3) 20%, var(--nexus-orange) 50%, rgba(0, 240, 255, 0.3) 80%, transparent);
+        }
+        .divider-tab {
+            position: relative;
+            top: 0;
+            width: 30px;
+            height: 3px;
+            background: linear-gradient(to bottom, var(--nexus-orange), #992200);
+            clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+            box-shadow: 0 1px 4px var(--nexus-orange);
+        }
+
+        /* ==========================================================================
+           INNER SCREEN (HUD Telemetry, 3D Mini Globe, & Live Result Display)
+           ========================================================================== */
+        .inner-screen {
+            position: relative;
+            z-index: 5;
+            flex-grow: 1;
+            border-radius: 10px;
+            border: 1px solid rgba(45, 75, 105, 0.65);
+            background: radial-gradient(ellipse at center, #0e1624 0%, #05080e 100%);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.95);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 7px;
+            padding: 6px 7px;
+        }
+
+        /* Top Mini Telemetry HUD Grid */
+        .mini-telemetry-hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 7.5px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            color: var(--nexus-steel);
+            border-bottom: 1px solid rgba(40, 60, 85, 0.4);
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+        }
+        .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .hud-dot-green {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--nexus-green);
+            box-shadow: 0 0 6px var(--nexus-green);
+        }
+        .hud-val-green {
+            color: var(--nexus-green);
+        }
+
+        /* Laser Beam Sweep on Scanning */
+        .laser-beam {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--nexus-orange), var(--nexus-cyan), var(--nexus-orange), transparent);
+            box-shadow: 0 0 10px var(--nexus-orange);
+            opacity: 0;
+            z-index: 20;
+            pointer-events: none;
+        }
+        .scanning-active .laser-beam {
+            opacity: 1;
+            animation: laserSweep 1.1s ease-in-out infinite;
+        }
+
+        #spd-ui {
+            position: relative;
+            z-index: 8;
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── READY STATE: 3D Holographic Globe + Ready Status ── */
+        .ready-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            text-align: center;
+        }
+
+        #miniGlobeCanvas {
+            width: 64px;
+            height: 64px;
+            filter: drop-shadow(0 0 10px rgba(255, 106, 0, 0.5));
+            margin-bottom: 2px;
+        }
+
+        .btitle {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            letter-spacing: 1.5px;
+        }
+        .bsub {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--nexus-orange);
+            letter-spacing: 1px;
+            margin-top: 1px;
+        }
+        .bnote {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 7.5px;
+            color: var(--nexus-steel);
+            letter-spacing: .5px;
+            margin-top: 2px;
+        }
+
+        /* ── LOADING STATE ── */
+        .spd-loader {
+            text-align: center;
+            width: 100%;
+        }
+        .dr-spinner-wrap {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 5px;
+        }
+        .dr-outer {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2.5px solid transparent;
+            border-top-color: var(--nexus-orange);
+            border-bottom-color: var(--nexus-orange);
+            animation: rotate-cw 1s linear infinite;
+            filter: drop-shadow(0 0 6px var(--nexus-orange));
+        }
+        .dr-inner {
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-left-color: var(--nexus-cyan);
+            border-right-color: var(--nexus-cyan);
+            animation: rotate-ccw 0.8s linear infinite;
+            filter: drop-shadow(0 0 6px var(--nexus-cyan));
+        }
+        .dr-core {
+            position: absolute;
+            inset: 15px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--nexus-orange), transparent);
+            box-shadow: 0 0 8px var(--nexus-orange);
+        }
+        .stage-txt {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 9.5px;
+            color: var(--nexus-orange-bright);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .per-txt {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 8.5px;
+            color: #fff;
+            margin-top: 2px;
+        }
+        .bar-wrap {
+            width: 120px;
+            height: 3.5px;
+            border-radius: 99px;
+            border: 1px solid rgba(255, 106, 0, 0.4);
+            margin: 3px auto 0;
+            overflow: hidden;
+            background: #000;
+        }
+        #spd-bar-fill {
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #cc3300, var(--nexus-orange), #ffffff);
+            box-shadow: 0 0 8px var(--nexus-orange);
+            transition: width .12s linear;
+        }
+
+        /* ── RESULT STATE WITH 3D PARTICLES ── */
+        .res-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            perspective: 800px;
+            transform-style: preserve-3d;
+        }
+        .res-mesh {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 14px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .m1 {
+            width: 90px;
+            height: 65px;
+            margin-top: -32px;
+            margin-left: -45px;
+            border: 1px solid rgba(255, 106, 0, 0.5);
+            box-shadow: 0 0 8px rgba(255, 106, 0, 0.3);
+            animation: rx 5s linear infinite;
+        }
+        .m2 {
+            width: 75px;
+            height: 75px;
+            margin-top: -37px;
+            margin-left: -37px;
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
+            animation: ry 6s linear infinite;
+        }
+        .premium-display {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 42px;
+            margin-bottom: 4px;
+            z-index: 5;
+        }
+        .result-aura {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--nexus-orange);
+            filter: blur(14px);
+            animation: auraBlast 1s ease-out forwards;
+        }
+        .result-word {
+            position: relative;
+            z-index: 6;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 19px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: textRise 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .res-divider {
+            width: 90%;
+            height: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 5;
+        }
+        .res-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 106, 0, 0.4) 20%, rgba(255, 106, 0, 0.4) 80%, transparent);
+            z-index: 1;
+        }
+        .res-pill {
+            position: relative;
+            z-index: 3;
+            background: #080c14;
+            border: 1px solid rgba(255, 106, 0, 0.5);
+            border-radius: 20px;
+            padding: 1.5px 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 8px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: .8px;
+            box-shadow: 0 0 8px rgba(255, 106, 0, 0.2);
+        }
+
+        /* ==========================================================================
+           SIGNATURE BUTTON ROW: INJECT >> (Image Match) & HIDE
+           ========================================================================== */
+        .stage-btnrow {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            gap: 6px;
+            height: 36px;
+        }
+
+        /* Signature NEXUS X "INJECT >>" Button */
+        button#spd-start {
+            flex: 1.35;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            border-radius: 18px;
+            border: 1.8px solid var(--nexus-orange);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 11.5px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            background: radial-gradient(circle at center, rgba(255, 106, 0, 0.25) 0%, rgba(14, 20, 30, 0.95) 80%);
+            box-shadow: 0 0 18px var(--nexus-orange-glow), inset 0 0 10px rgba(255, 106, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            overflow: hidden;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        button#spd-start svg.syringe-icon {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 4px #ffffff);
+        }
+        button#spd-start .btn-arrows {
+            color: var(--nexus-orange);
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+        }
+        button#spd-start:hover {
+            transform: translateY(-1px);
+            background: radial-gradient(circle at center, rgba(255, 106, 0, 0.38) 0%, rgba(18, 25, 38, 0.98) 80%);
+            box-shadow: 0 0 24px var(--nexus-orange-glow), inset 0 0 14px rgba(255, 120, 0, 0.5);
+        }
+        button#spd-start:active {
+            transform: translateY(1px) scale(0.98);
+        }
+        button#spd-start:disabled {
+            filter: grayscale(0.8) opacity(0.6);
+            cursor: not-allowed;
+            animation: none;
+        }
+
+        /* Sleek HIDE Button */
+        button#spd-hide {
+            flex: 0.65;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 9px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--nexus-steel);
+            border: 1px solid rgba(45, 70, 95, 0.5);
+            background: rgba(14, 21, 33, 0.8);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            transition: all 0.2s;
+        }
+        button#spd-hide:hover {
+            color: #ffffff;
+            border-color: var(--nexus-cyan);
+            background: rgba(20, 32, 48, 0.95);
+            box-shadow: 0 0 10px var(--nexus-cyan-glow);
+        }
+        button#spd-hide:active {
+            transform: translateY(1px);
+        }
+
+        /* Screen Impact Flash Effect */
+        .impact-flash {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255, 106, 0, 0.5), transparent 70%);
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.15s ease-out;
+        }
+        .impact-flash.flashed {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Website Iframe (for Mobile App Web Overlay) -->
+    <div class="app-bg-standalone" id="standaloneBg"></div>
+    <iframe id="bgFrame" src="{web}"></iframe>
+
+    <!-- Ambient Particle Canvas -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ==========================================================================
+         MINI FLOATING FAB (Nexus X Orb)
+         ========================================================================== -->
+    <div id="mini">
+        <div id="spd-fab-core">
+            <div id="spd-fab-icon">
+                <img id="spd-fab-img" src="{image}" onerror="this.src='https://i.ibb.co/B5yxyQ0z/IMG-20260605-213154-022.jpg'">
+            </div>
+            <div id="spd-fab-dot"></div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         STAGE PANEL: COMPACT NEXUS X INJECTOR (Optimized for Mobile Screen Overlays)
+         ========================================================================== -->
+    <div id="stage">
+        <!-- Glowing Flowing Cyber SVG Border Stream -->
+        <svg class="border-svg" viewBox="0 0 236 270" preserveAspectRatio="none">
+            <rect class="stream-1" x="1.5" y="1.5" width="233" height="267" rx="15" ry="15" />
+            <rect class="stream-2" x="1.5" y="1.5" width="233" height="267" rx="15" ry="15" />
+        </svg>
+
+        <div class="stage-wrapper">
+            <div class="impact-flash" id="impactFlash"></div>
+            <div class="panel-grid"></div>
+            <div class="bracket b-tl"></div>
+            <div class="bracket b-tr"></div>
+            <div class="bracket b-bl"></div>
+            <div class="bracket b-br"></div>
+            
+            <!-- STAGE HEADER (Nexus X Title, Status Badge, ONLY 1 Close Button) -->
+            <div class="stage-header" id="stageDragHandle">
+                <div class="title-group">
+                    <!-- Chrome Delta Triangle Sci-Fi Logo -->
+                    <svg class="mini-delta-logo" viewBox="0 0 100 100" fill="none">
+                        <polygon points="50,8 92,85 8,85" fill="url(#steelGrad)" stroke="#2f4966" stroke-width="1.5"/>
+                        <polygon points="50,28 77,77 23,77" fill="#080c14"/>
+                        <polygon points="50,38 68,74 32,74" fill="url(#fireOrange)"/>
+                        <defs>
+                            <linearGradient id="steelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ffffff"/>
+                                <stop offset="50%" stop-color="#7e9bb9"/>
+                                <stop offset="100%" stop-color="#1b2839"/>
+                            </linearGradient>
+                            <linearGradient id="fireOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff9900"/>
+                                <stop offset="70%" stop-color="#ff5500"/>
+                                <stop offset="100%" stop-color="#991500"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div class="brand-text-col">
+                        <span class="main-title">
+                            <span id="titleName">NEXUS</span><span class="x-span">X</span>
+                        </span>
+                        <span class="sub-title">INJECTOR</span>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <div class="status-badge" id="spd-badge">ONLINE</div>
+                    <!-- Single Clean Close Button (Removed the duplicate button) -->
+                    <div class="single-close-btn" onclick="closeCard()" title="Hide Injector">✕</div>
+                </div>
+            </div>
+            
+            <!-- Header Divider -->
+            <div class="header-divider">
+                <div class="divider-line"></div>
+                <div class="divider-tab"></div>
+            </div>
+            
+            <!-- Inner Telemetry Screen -->
+            <div class="inner-screen" id="innerScreen">
+                <div class="laser-beam"></div>
+
+                <!-- Mini Telemetry Row (Image Match: STATUS, BYPASS, PING) -->
+                <div class="mini-telemetry-hud">
+                    <div class="hud-item">
+                        <span class="hud-dot-green"></span>
+                        <span class="hud-val-green">ONLINE</span>
+                    </div>
+                    <div class="hud-item">
+                        <span>BYPASS:</span>
+                        <span class="hud-val-green">ACTIVE</span>
+                    </div>
+                    <div class="hud-item">
+                        <span id="hudPingVal">16 MS</span>
+                    </div>
+                </div>
+
+                <!-- Dynamic State UI Area -->
+                <div id="spd-ui"></div>
+            </div>
+            
+            <!-- Signature Button Row: INJECT >> & HIDE -->
+            <div class="stage-btnrow">
+                <button id="spd-start">
+                    <svg class="syringe-icon" viewBox="0 0 24 24">
+                        <path d="M18 2L22 6"/>
+                        <path d="M16.5 4.5L19.5 7.5"/>
+                        <path d="M15 6L8 13"/>
+                        <path d="M14 9L11 6"/>
+                        <path d="M8 13L4 17V20H7L11 16"/>
+                        <path d="M4 20L2 22"/>
+                    </svg>
+                    <span id="startBtnTxt">INJECT</span>
+                    <span class="btn-arrows">&gt;&gt;</span>
+                </button>
+                <button id="spd-hide">HIDE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         CORE JAVASCRIPT: Logic, Mini 3D Globe, Live WinGo API, SFX, Drag & Drop
+         ========================================================================== -->
+    <script>
+        let isWorking = false;
+        let opened = false;
+        let globeAnimId = null;
+
+        const mini = document.getElementById("mini");
+        const stage = document.getElementById("stage");
+        const ui = document.getElementById("spd-ui");
+        const badge = document.getElementById("spd-badge");
+        const startBtn = document.getElementById("spd-start");
+        const startBtnTxt = document.getElementById("startBtnTxt");
+        const hideBtn = document.getElementById("spd-hide");
+        const innerScreen = document.getElementById("innerScreen");
+
+        // Web Audio API zero-dependency SFX
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    const AC = window.AudioContext || window.webkitAudioContext;
+                    if (AC) this.ctx = new AC();
+                }
+            },
+            click() {
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1100, now);
+                    osc.frequency.exponentialRampToValueAtTime(350, now + 0.05);
+                    gain.gain.setValueAtTime(0.18, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } catch(e){}
+            },
+            success() {
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    [587.33, 880, 1174.66].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+                        gain.gain.setValueAtTime(0.2, now + idx * 0.06);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.35);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now + idx * 0.06);
+                        osc.stop(now + idx * 0.06 + 0.35);
+                    });
+                } catch(e){}
+            }
+        };
+
+        // Fallback title name & standalone check
+        window.addEventListener('DOMContentLoaded', () => {
+            const iframe = document.getElementById('bgFrame');
+            if (!iframe.src || iframe.src.includes('%7Bweb%7D') || iframe.src.includes('{web}')) {
+                iframe.style.display = 'none';
+                document.getElementById('standaloneBg').style.display = 'block';
+            }
+            const tName = document.getElementById('titleName');
+            if (tName && (tName.innerText.includes('{name}') || tName.innerText.trim() === '')) {
+                tName.innerText = 'NEXUS';
+            }
+        });
+
+        // Dynamic Realistic Ping Jitter (13-19 MS)
+        setInterval(() => {
+            const pEl = document.getElementById('hudPingVal');
+            if (pEl) {
+                pEl.innerText = Math.floor(13 + Math.random() * 6) + ' MS';
+            }
+        }, 2600);
+
+        function updateBadge(text, color) {
+            badge.innerText = text;
+            badge.style.color = color;
+            badge.style.borderColor = color;
+            badge.style.boxShadow = `0 0 8px ${color}`;
+        }
+
+        function setBtn(text, fn) {
+            startBtnTxt.innerText = text;
+            startBtn.onclick = fn;
+            startBtn.disabled = !fn;
+        }
+
+        /* ── READY STATE (Features 3D Holographic Cyber Earth) ── */
+        function renderReadyState() {
+            innerScreen.classList.remove('scanning-active');
+            updateBadge("ONLINE", "var(--nexus-green)");
+            ui.innerHTML = `
+                <div class="ready-box">
+                    <canvas id="miniGlobeCanvas" width="64" height="64"></canvas>
+                    <div class="btitle">READY</div>
+                    <div class="bsub">STANDBY • AI SYNCED</div>
+                    <div class="bnote">CLICK INJECT TO SCAN</div>
+                </div>`;
+            setBtn("INJECT", runInjection);
+            initMiniGlobe();
+        }
+
+        /* ── 3D HOLOGRAPHIC CYBER GLOBE (Compact 60 FPS) ── */
+        function initMiniGlobe() {
+            const canvas = document.getElementById('miniGlobeCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            const r = 24;
+            const cx = w / 2;
+            const cy = h / 2;
+
+            let rot = 0;
+            let orbit = 0;
+
+            const pts = [];
+            for (let i = 0; i < 90; i++) {
+                const phi = Math.acos(-1 + (2 * i) / 90);
+                const theta = Math.sqrt(90 * Math.PI) * phi;
+                pts.push({
+                    x: Math.cos(theta) * Math.sin(phi),
+                    y: Math.cos(phi),
+                    z: Math.sin(theta) * Math.sin(phi),
+                    isCity: Math.random() > 0.6
+                });
+            }
+
+            function draw() {
+                if (!document.getElementById('miniGlobeCanvas')) return;
+                ctx.clearRect(0, 0, w, h);
+                rot += 0.015;
+                orbit += 0.025;
+
+                // Planet Rim Atmosphere Light
+                const rim = ctx.createRadialGradient(cx, cy, r * 0.5, cx, cy, r * 1.3);
+                rim.addColorStop(0, 'rgba(10, 16, 26, 0)');
+                rim.addColorStop(0.8, 'rgba(255, 106, 0, 0.15)');
+                rim.addColorStop(0.98, 'rgba(0, 240, 255, 0.35)');
+                rim.addColorStop(1, 'transparent');
+                ctx.fillStyle = rim;
+                ctx.beginPath();
+                ctx.arc(cx, cy, r * 1.3, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Planet Dark Core
+                const core = ctx.createRadialGradient(cx - 8, cy - 8, 4, cx, cy, r);
+                core.addColorStop(0, '#223247');
+                core.addColorStop(0.6, '#0b111c');
+                core.addColorStop(1, '#05070c');
+                ctx.fillStyle = core;
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Back Orbit Arc
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(-0.4);
+                ctx.beginPath();
+                ctx.ellipse(0, 0, r * 1.5, r * 0.5, 0, Math.PI, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 106, 0, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Rotating Continental Points & Cities
+                const cosR = Math.cos(rot), sinR = Math.sin(rot);
+                pts.forEach(p => {
+                    const rx = p.x * cosR - p.z * sinR;
+                    const rz = p.x * sinR + p.z * cosR;
+                    if (rz > -0.1) {
+                        const px = rx * r;
+                        const py = p.y * r;
+                        ctx.fillStyle = p.isCity ? '#ff8c00' : 'rgba(0, 240, 255, 0.6)';
+                        ctx.beginPath();
+                        ctx.arc(px, py, p.isCity ? 1.4 : 0.9, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                });
+
+                // Front Orbit Arc & Satellite Beacon
+                ctx.beginPath();
+                ctx.ellipse(0, 0, r * 1.5, r * 0.5, 0, 0, Math.PI);
+                ctx.strokeStyle = '#ff6a00';
+                ctx.shadowColor = '#ff6a00';
+                ctx.shadowBlur = 5;
+                ctx.lineWidth = 1.3;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                const satX = Math.cos(orbit) * r * 1.5;
+                const satY = Math.sin(orbit) * r * 0.5;
+                if (satY > 0) {
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowColor = '#ffaa00';
+                    ctx.shadowBlur = 6;
+                    ctx.beginPath();
+                    ctx.arc(satX, satY, 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+                ctx.restore();
+
+                globeAnimId = requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        /* ── INJECTION PROCESS (WinGo 1M Live API) ── */
+        async function runInjection() {
+            if (isWorking) return;
+            isWorking = true;
+            AudioFX.click();
+
+            if (globeAnimId) cancelAnimationFrame(globeAnimId);
+            innerScreen.classList.add('scanning-active');
+            updateBadge("SYNC", "var(--nexus-orange)");
+            
+            let p = 0;
+            ui.innerHTML = `
+                <div class="spd-loader">
+                    <div class="dr-spinner-wrap">
+                        <div class="dr-outer"></div>
+                        <div class="dr-inner"></div>
+                        <div class="dr-core"></div>
+                    </div>
+                    <div class="stage-txt" id="spd-stage">BYPASSING</div>
+                    <div class="per-txt" id="spd-percent">0%</div>
+                    <div class="bar-wrap"><i id="spd-bar-fill"></i></div>
+                </div>`;
+            setBtn("WAIT...", null);
+            
+            let stages = ["ENCRYPTING", "FETCHING", "0xDD41", "READY"];
+            let timer = setInterval(() => {
+                p += Math.random() * 14 + 6;
+                if (p >= 90) p = 90;
+                
+                const fill = document.getElementById("spd-bar-fill");
+                const pct = document.getElementById("spd-percent");
+                const stg = document.getElementById("spd-stage");
+                if (fill) fill.style.width = Math.floor(p) + "%";
+                if (pct) pct.innerText = Math.floor(p) + "%";
+                if (stg) stg.innerText = stages[Math.min(stages.length - 1, Math.floor(p / 25))];
+            }, 100);
+
+            try {
+                const response = await fetch("https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json", {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await response.json();
+                const latest = data.data.list[0];
+                const exactNum = parseInt(latest.number);
+                
+                let currentPeriodStr = latest.issueNumber;
+                let nextPeriodNum = parseInt(currentPeriodStr.slice(-4)) + 0;
+                let displayPeriod = String(nextPeriodNum).padStart(4, '0');
+                let resultBigSmall = (exactNum >= 0 && exactNum <= 4) ? "SMALL" : "BIG";
+
+                clearInterval(timer);
+                completeProgress(() => {
+                    showResult({ period: displayPeriod, num: exactNum, bs: resultBigSmall });
+                });
+
+            } catch (error) {
+                console.warn("API Error, using fallback quantum predictor.");
+                clearInterval(timer);
+                completeProgress(() => {
+                    let fallbackNum = Math.floor(Math.random() * 10);
+                    let fallbackBs = fallbackNum <= 4 ? "SMALL" : "BIG";
+                    let d = new Date();
+                    let m = d.getUTCHours() * 60 + d.getUTCMinutes();
+                    let javaPeriod = String(10001 + m).slice(-4);
+                    
+                    showResult({ period: javaPeriod, num: fallbackNum, bs: fallbackBs });
+                });
+            }
+        }
+
+        function completeProgress(cb) {
+            const fill = document.getElementById("spd-bar-fill");
+            const pct = document.getElementById("spd-percent");
+            if (fill) fill.style.width = "100%";
+            if (pct) pct.innerText = "100%";
+            setTimeout(cb, 350);
+        }
+
+        /* ── RESULT STATE DISPLAY ── */
+        function showResult(r) {
+            innerScreen.classList.remove('scanning-active');
+            updateBadge("DONE", "#ffffff");
+            AudioFX.success();
+
+            // Impact Flash
+            const flash = document.getElementById('impactFlash');
+            if (flash) {
+                flash.classList.add('flashed');
+                setTimeout(() => flash.classList.remove('flashed'), 180);
+            }
+
+            const colorGlow = r.bs === 'BIG' ? 'var(--nexus-cyan)' : 'var(--nexus-orange)';
+            const textShadow = r.bs === 'BIG' ? '0 0 15px var(--nexus-cyan), 0 0 25px rgba(0,240,255,0.7)' : '0 0 15px var(--nexus-orange), 0 0 25px rgba(255,106,0,0.7)';
+
+            ui.innerHTML = `
+                <div class="res-container">
+                    <div class="res-mesh m1"></div>
+                    <div class="res-mesh m2"></div>
+                    <div class="premium-display">
+                        <div class="result-aura" style="background: ${colorGlow}"></div>
+                        <div class="result-word" style="color: #fff; text-shadow: ${textShadow};">
+                            ${r.bs} ${r.num}
+                        </div>
+                    </div>
+                    <div class="res-divider">
+                        <div class="res-line"></div>
+                        <div class="res-pill">SEQ: #${r.period}</div>
+                    </div>
+                </div>`;
+                
+            setBtn("RE-INJECT", runInjection);
+            isWorking = false;
+        }
+
+        /* ── Universal Draggable Logic (Smooth Mouse & Touch for Mobile Overlays) ── */
+        function makeDraggable(el, clickCallback) {
+            let sx = 0, sy = 0, ox = 0, oy = 0, isDragging = false, hasMoved = false;
+
+            function touchStart(e) {
+                if (e.target.tagName.toLowerCase() === 'button' || e.target.closest('button') || e.target.closest('.single-close-btn')) return;
+                let p = e.touches ? e.touches[0] : e;
+                sx = p.clientX; sy = p.clientY;
+                let comp = window.getComputedStyle(el);
+                ox = parseInt(comp.left, 10); oy = parseInt(comp.top, 10);
+                isDragging = true; hasMoved = false;
+                el.style.transition = 'none';
+            }
+
+            function touchMove(e) {
+                if (!isDragging) return;
+                let p = e.touches ? e.touches[0] : e;
+                let dx = p.clientX - sx, dy = p.clientY - sy;
+                if (Math.abs(dx) > 5 || Math.abs(dy) > 5) hasMoved = true;
+                let nx = Math.max(4, Math.min(window.innerWidth - el.offsetWidth - 4, ox + dx));
+                let ny = Math.max(4, Math.min(window.innerHeight - el.offsetHeight - 4, oy + dy));
+                el.style.left = nx + 'px'; el.style.top = ny + 'px';
+                if (e.cancelable) e.preventDefault();
+            }
+
+            function touchEnd(e) {
+                if (!isDragging) return;
+                isDragging = false;
+                el.style.transition = "left 0.1s ease-out, top 0.1s ease-out";
+                if (!hasMoved && typeof clickCallback === 'function') clickCallback();
+                setTimeout(() => { el.style.transition = ''; }, 150);
+            }
+
+            el.addEventListener("touchstart", touchStart, { passive: false });
+            document.addEventListener("touchmove", touchMove, { passive: false });
+            document.addEventListener("touchend", touchEnd, { passive: false });
+            el.addEventListener("mousedown", touchStart, false);
+            document.addEventListener("mousemove", touchMove, false);
+            document.addEventListener("mouseup", touchEnd, false);
+        }
+
+        /* ── Open / Close Card Handlers ── */
+        function openCard() {
+            if (opened) return;
+            opened = true;
+            AudioFX.click();
+            mini.style.display = 'none';
+            stage.style.display = 'block';
+            stage.classList.remove('spd-close');
+            stage.classList.add('spd-open');
+            renderReadyState();
+        }
+
+        function closeCard() {
+            if (!opened) return;
+            opened = false;
+            AudioFX.click();
+            if (globeAnimId) cancelAnimationFrame(globeAnimId);
+            stage.classList.remove('spd-open');
+            stage.classList.add('spd-close');
+            mini.style.display = 'flex';
+            setTimeout(() => {
+                if (!opened) {
+                    stage.style.display = 'none';
+                    stage.classList.remove('spd-close');
+                }
+            }, 220);
+        }
+        
+        hideBtn.onclick = closeCard;
+        makeDraggable(mini, openCard);
+        makeDraggable(stage, null);
+
+        /* ── Ambient Floating Particles Layer ── */
+        (function initAmbientParticles() {
+            const cvs = document.getElementById('particleCanvas');
+            if (!cvs) return;
+            const ctx = cvs.getContext('2d');
+            let pts = [];
+            function resize() { cvs.width = window.innerWidth; cvs.height = window.innerHeight; }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class P {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * cvs.width;
+                    this.y = cvs.height + 10;
+                    this.vx = (Math.random() - 0.5) * 0.4;
+                    this.vy = -(Math.random() * 1.2 + 0.3);
+                    this.alpha = Math.random() * 0.5 + 0.2;
+                    this.size = Math.random() * 1.6 + 0.5;
+                    this.col = ['#ff6a00', '#00f0ff', '#ff8c00'][Math.floor(Math.random() * 3)];
+                }
+                update() {
+                    this.x += this.vx; this.y += this.vy;
+                    this.alpha -= 0.003;
+                    if (this.alpha <= 0 || this.y < -10) this.reset();
+                }
+                draw() {
+                    ctx.globalAlpha = this.alpha;
+                    ctx.fillStyle = this.col;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            for (let i = 0; i < 25; i++) pts.push(new P());
+            function loop() {
+                ctx.clearRect(0, 0, cvs.width, cvs.height);
+                pts.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(loop);
+            }
+            loop();
+        })();
+    </script>
+</body>
+</html>
